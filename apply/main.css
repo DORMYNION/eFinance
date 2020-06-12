@@ -220,7 +220,9 @@ h2{
 #continuecont{
   width:100%;
   height:40px;
-  text-align:right;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 #continuebutton{
@@ -234,10 +236,27 @@ h2{
   padding-left:10px;
   padding-right:10px;
   border-radius:25px;
-  float:right;
 }
 a:hover #continuebutton{
   background:#273152;
+}
+#accepttext{
+  padding-left:5px;
+  padding-right:20px;
+  color:green;
+  font-size:13px;
+}
+#terms{
+  width:100%;
+  height:auto;
+  font-size:13px;
+  color:#333;
+  padding-top:30px;
+}
+#terms h3{
+  font-size:13px;
+  color:green;
+  font-weight:400;
 }
 #formrow{
   display: flex;
