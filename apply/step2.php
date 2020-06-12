@@ -6,7 +6,7 @@
 				<div id="trackitemcont">
 					<div id="trackitemtop">
 						<div id="trackitemtopleft" style="border:0px;"></div>
-						<div id="trackitemtopmiddle" class="whitetext"><a href="index.php"><i class="fas fa-dot-circle"></i></a></div>
+						<div id="trackitemtopmiddle" class="whitetext"><a href="step1.php"><i class="fas fa-dot-circle"></i></a></div>
 						<div id="trackitemtopright" class="whiteborder"></div>
 					</div><!--trackitemtop-->
 					<div id="trackitembottom" class="whitetext">Verify Your BVN</div><!--trackitembottom-->
