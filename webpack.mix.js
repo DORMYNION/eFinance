@@ -1,4 +1,17 @@
+const path = require('path');
 const mix = require('laravel-mix');
+
+
+
+mix.webpackConfig({
+   resolve: {
+      alias: {
+         "@": ".."
+      }
+   }
+});
+
+
 
 /*
  |--------------------------------------------------------------------------
@@ -12,4 +25,8 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+   .sass('resources/sass/app.scss', 'public/css', {
+   implementation: require('node-sass')
+});
+
+mix.copy('../eFinance_ui/public', 'public');
