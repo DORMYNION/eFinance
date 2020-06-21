@@ -1,0 +1,505 @@
+/*
+Theme Name: Unotech e-finance
+Author: Dolapo Taiwo
+Description: Theme for efinance by Unotech Media
+Version: 0.0.1
+Tags: Unotech
+*/
+
+
+*:focus {
+outline: 0;
+outline: none;
+}
+a {
+  color:inherit;
+  text-decoration: none;
+ }
+
+body {
+    font-family: 'Muli', sans-serif;
+    margin:0px;
+    padding:0px;
+}
+body a{
+  text-decoration: none;
+}
+#header-container{
+  width: 100%;
+  height:100px;
+  padding-top:20px;
+}
+#header-inner{
+  width:80%;
+  height:100px;
+  margin-left:auto;
+  margin-right:auto;
+}
+#headerleft{
+  width:20%;
+  height:100px;
+  float:left;
+  display:inline;
+  position:relative;
+
+}
+#headerleft img{
+  position:absolute;
+  top:0;
+  bottom:0;
+  margin:auto;
+  width:230px;
+  padding-bottom:5px;
+}
+#headernav{
+  width:60%;
+  padding-left:5%;
+  height:100px;
+  line-height:100px;
+  float:left;
+  display:inline;
+  font-size:16px;
+}
+
+#header-right{
+  width:15%;
+  height:100px;
+  float:left;
+  line-height: 100px;
+  position:relative;
+}
+
+#footer{
+  width:80%;
+  height:auto;
+  margin-left:auto;
+  margin-right:auto;
+}
+#footertop{
+  width:100%;
+  height:100px;
+  border-bottom:1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#footerbottom{
+  width:100%;
+  height:100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#footerleft{
+  width:30%;
+}
+#footerright{
+  width:60%;
+  text-align: right;
+  font-size:14px;
+}
+#quote{
+  position:absolute;
+  width:150px;
+  height:40px;
+  background:#73c380;
+  font-size:14px;
+  color:#fff;
+  text-align:center;
+  line-height:40px;
+  padding-left:10px;
+  padding-right:10px;
+  top:0;
+  bottom:0;
+  right:0;
+  margin:auto;
+  border-radius:25px;
+}
+a:hover #quote{
+  background:#273152;
+}
+#tracker{
+  width:60%;
+  padding-left:20%;
+  padding-right:20%;
+  height:100px;
+  background: url('img/stepsbg.jpg') no-repeat center top;
+  background-size:cover;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#myinner{
+  width:100%;
+  height:auto;
+  background:#fbfbfb;
+  padding-bottom:60px;
+}
+#midsection{
+  width:100%;
+  height:300px;
+  background: url('img/tailor.png') no-repeat center bottom;
+  background-size:cover;
+}
+#trackitemcont{
+  width:25%;
+  height:auto;
+  padding-top:20px
+}
+#trackitemtop{
+  width:100%;
+  height:30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom:10px;
+}
+#trackitemtopleft{
+  width:41%;
+  height:1px;
+  border-top:1px dashed #c9d9aa;
+}
+#trackitemtopmiddle{
+  width:18%;
+  text-align: center;
+  color:#c9d9aa;
+  font-size: 2.2vw;
+}
+#trackitemtopmiddle a:hover{
+  color:green;
+}
+
+#trackitemtopright{
+  width:41%;
+  height:1px;
+  border-top:1px dashed #c9d9aa;
+}
+.trackitembottom{
+  width:100%;
+  height:20px;
+  font-size:12px;
+  color:#c9d9aa;
+  text-align:center;
+}
+.whitetext{
+  color:#fff !important;
+}
+a:hover{
+  color:green;
+}
+.whiteborder{
+  border-top:2px solid #fff !important;
+}
+#subheading{
+  width:100%;
+  text-align: center;
+  padding-top:30px;
+}
+h1{
+  font-size:22px;
+  color:green;
+}
+h2{
+  font-size:17px;
+  color:#555;
+  font-weight: 400;
+}
+#loanapplicationcont{
+  width:60%;
+  padding-left:10%;
+  padding-right:10%;
+  padding-top:30px;
+  padding-bottom:60px;
+  background:#fff;
+  border:1px solid #eee;
+  border-radius: 5px;
+  margin-top:20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.continuecont{
+  width:100%;
+  height:40px;
+  /* display:flex;
+  justify-content: flex-end;
+  align-items: center; */
+}
+.continuecont button:disabled {
+  background-color: #74d18c !important;
+}
+
+.continuebutton{
+  width:100px;
+  height:40px;
+  background:green;
+  font-size:14px;
+  color:#fff;
+  text-align:center;
+  line-height:40px;
+  padding-left:10px;
+  padding-right:10px;
+  border-radius:25px;
+  float: right;
+  border: 0;
+}
+a:hover .continuebutton{
+  background:#273152;
+}
+.backbutton{
+  width:100px;
+  height:40px;
+  background:green;
+  font-size:14px;
+  color:#fff;
+  text-align:center;
+  line-height:40px;
+  padding-left:10px;
+  padding-right:10px;
+  border-radius:25px;
+  float: left;
+  border: 0;
+}
+a:hover .backbutton{
+  background:#273152;
+}
+#accepttext{
+  padding-left:5px;
+  padding-right:20px;
+  color:green;
+  font-size:13px;
+}
+.termscont{
+  width:100%;
+  height:40px;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.termscont button:disabled {
+  background-color: #74d18c !important;
+}
+#terms{
+  height:auto;
+  font-size:13px;
+  color:#333;
+  padding-top:30px;
+}
+#terms h3{
+  font-size:13px;
+  color:green;
+  font-weight:400;
+}
+.formrow{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width:100%;
+}
+.biginputbox{
+  width:90%;
+  padding-left:5%;
+  padding-right:5%;
+  height:40px;
+  background:#fff;
+  border:1px solid #dee7de;
+  border-radius:5px;
+  font-family: 'Muli', sans-serif;
+  color:#888;
+}
+.biginputbox:focus{
+  border:1px solid #74d18c;
+}
+.largeinputbox{
+  width:62%;
+  padding-left:2%;
+  padding-right:2%;
+  height:40px;
+  background:#fff;
+  border:1px solid #dee7de;
+  border-radius:5px;
+  font-family: 'Muli', sans-serif;
+  color:#888;
+}
+.largeinputbox:focus{
+  border:1px solid #74d18c;
+}
+.smallinputbox{
+  width:28%;
+  padding-left:2%;
+  padding-right:2%;
+  height:40px;
+  background:#fff;
+  border:1px solid #dee7de;
+  border-radius:5px;
+  font-family: 'Muli', sans-serif;
+  color:#525252;
+  font-size:14px;
+}
+.smallinputbox:focus{
+  border:1px solid #74d18c;
+}
+.smallselect{
+  width:32%;
+  padding-left:2%;
+  height:40px;
+  background:#fff;
+  border:1px solid #dee7de;
+  border-radius:5px;
+  font-family: 'Muli', sans-serif;
+  color:#525252;
+  font-size:14px;
+}
+.smallselect:focus{
+  border:1px solid #74d18c;
+}
+.mylabelstyle{
+  display:block;
+  width:32%;
+  font-size:14px;
+  font-weight: 700;
+  color:#333;
+  padding-left:3px;
+  color:#515247;
+}
+.mylabelstyle2{
+  display:block;
+  width:64%;
+  font-size:14px;
+  font-weight: 700;
+  color:#333;
+  padding-left:3px;
+  color:#515247;
+}
+.smallemptybox{
+  width:28%;
+  padding-left:2%;
+  padding-right:2%;
+  height:40px;
+}
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: green;
+  cursor: pointer;
+}
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: green;
+  cursor: pointer;
+}
+.formrow p {
+  display: block;
+  padding: 3px 8px 0;
+  font-size: 12px;
+  font-weight: 400;
+}
+.formrow h4 {
+  display: block;
+  padding: 10px 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+@media all and (max-width: 736px) {
+  #headernav{
+    display:none;
+  }
+  #header-inner{
+    width:95%;
+  }
+  #headerleft{
+    width:40%;
+  }
+  #headerleft img{
+    width:170px;
+  }
+  #header-right{
+    float:right;
+    width:20%;
+  }
+  #quote{
+    width:100%;
+  }
+  #footer{
+    width:90%;
+  }
+  #footertop{
+    width:100%;
+    height:auto;
+    display: block;
+    padding-top:30px;
+    padding-bottom:30px;
+  }
+  #footerbottom{
+    width:100%;
+    height:auto;
+    padding-top:30px;
+    display: block;
+    margin-bottom:30px;
+  }
+  #footerleft{
+    width:100%;
+    text-align:center;
+    padding-bottom:20px;
+  }
+  #footerright{
+    width:100%;
+    text-align: center;
+  }
+  #tracker{
+    width:90%;
+    padding-left:5%;
+    padding-right:5%;
+    height:100px;
+  }
+  .trackitembottom{
+    width:70%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  #trackitemcont{
+    padding-top:5px;
+  }
+  #midsection{
+    height:150px;
+  }
+  #subheading{
+    padding-top:5px;
+  }
+  .mylabelstyle{
+    display:none;
+  }
+  .formrow{
+    display:block;
+  }
+  .smallinputbox{
+    width:100%;
+    margin-bottom:15px;
+  }
+  .smallemptybox{
+    display:none;
+  }
+
+}
