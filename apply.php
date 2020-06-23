@@ -70,14 +70,23 @@
                             @keypress="isNumberKey($event)" required
                         >
                     </div>
+                        <div v-if="msgError.bvn" class="invalid-feedback">
+                            {{ msgError.bvn }}
+                        </div>
 
                     <div class="continuecont" style="margin-top:30px;">
                         <button 
                             id="next" 
-                            class="continuebutton next"
+                            class="continuebutton next notVisible"
                             :disabled="isDisableBvn"
                             @click="showNext('step1', 'step2', 'icon1', 'icon2', 'text1')"
+                            @click="getBvnDetail(bvn, 'step1', 'step2', 'icon1', 'icon2', 'text1')"
                         >Continue</button>
+                        <button 
+                            id="check" 
+                            class="continuebutton next"
+                            @click="getBvnDetail(bvn)"
+                        >check</button>
                     </div>
                 </div>
                 <!-- BVN Section-->
@@ -129,10 +138,10 @@
                         >Back</button>
                         <button 
                             id="next0" 
-                            class="continuebutton next"
+                            class="continuebutton next tooltip"
                             :disabled="isDisablePersonal"
                             @click="showNext('step2', 'step3', 'icon2', 'icon3', 'text2')"
-                        >Continue</button>
+                        ><span class="tooltiptext">Continue<span></button>
                     </div>
                 </div>
                 <!-- Personal Section-->
@@ -407,8 +416,6 @@
     <?php include('footer.php');?>
 
     <style scoped>
-        @import '/css/bootstrap-slider.css';
-
         .isVisible {
         display:block;
         }
