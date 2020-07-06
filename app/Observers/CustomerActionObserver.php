@@ -15,7 +15,7 @@ class CustomerActionObserver {
         $users = \App\User::whereHas('roles', function($q) {
             return $q->where('title', 'Admin');
         })->get();
-        Notification::send($users, new DataChangeEmailNotification($data));
+        // Notification::send($users, new DataChangeEmailNotification($data));
     }
 
     public function updated(Customer $model) {
@@ -26,7 +26,7 @@ class CustomerActionObserver {
         $users = \App\User::whereHas('roles', function($q) {
             return $q->where('title', 'Admin');
         })->get();
-        Notification::send($users, new DataChangeEmailNotification($data));
+        // Notification::send($users, new DataChangeEmailNotification($data));
     }
 
     public function deleting(Customer $model) {
@@ -37,6 +37,6 @@ class CustomerActionObserver {
         $users = \App\User::whereHas('roles', function($q) {
             return $q->where('title', 'Admin');
         })->get();
-        Notification::send($users, new DataChangeEmailNotification($data));
+        // Notification::send($users, new DataChangeEmailNotification($data));
     }
 }

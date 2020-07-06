@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AuditLogController extends Controller {
 
-    public function indext(Request $request) {
+    public function index(Request $request) {
         
         abort_if(Gate::denies('audit_log_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 

@@ -119,3 +119,17 @@ table.dataTable thead .sorting_desc {
 .c-sidebar-brand .c-sidebar-brand-full:hover {
     color: inherit;
 }
+
+label>select.custom-select {
+    padding-right: 15px;
+}
+div.dataTables_length>label {
+    padding-right: 15px;
+}
+
+/* .c-sidebar {
+    width: 240px !important;
+}
+.c-wrapper {
+    margin-left: 240px;
+} */

@@ -20,7 +20,11 @@ class LoanAmountController extends Controller
 
         $loanAmounts = LoanAmount::all();
 
-        return view('admin.loanAmounts.index', compact('loanAmounts'));
+        $loans = Loan::where('status', 'Approved')->get();
+
+        // dd($loans);
+
+        return view('admin.loanAmounts.index', compact('loans'));
     }
 
     public function create()

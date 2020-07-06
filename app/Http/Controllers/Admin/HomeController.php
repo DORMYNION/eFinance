@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Customer;
+use App\Loan;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 
 class HomeController
@@ -440,6 +442,19 @@ class HomeController
             $settings10['fields'] = [];
         }
 
-        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5', 'settings6', 'settings7', 'settings8', 'settings9', 'settings10'));
+        // $customers = Customer::all()->pluck();
+        // $loans = Loan::all();
+
+        // dd($loans);
+
+        // return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5', 'settings6', 'settings7', 'settings8', 'settings9', 'settings10', 'loans'));
+    }
+
+    public function home() 
+    {
+        // $loans = Loan::all();
+
+        // dd($loans);
+
     }
 }

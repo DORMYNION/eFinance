@@ -1,14 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-@can('loan_amount_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.loan-amounts.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.loanAmount.title_singular') }}
-            </a>
-        </div>
-    </div>
-@endcan
+@section('breadcrumb', 'Approved Loans')
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.loanAmount.title_singular') }} {{ trans('global.list') }}
@@ -16,100 +8,62 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-LoanAmount">
-                <thead>
+            <table class=" table table-responsive-sm table-hover table-outline mb-0 datatable datatable-LoanAmount">
+                <thead class="thead-light">
                     <tr>
-                        <th width="10">
-
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.id') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.loan') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.sub_total') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.interest') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.total') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.paid') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.balance') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.loan_date') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanAmount.fields.due_date') }}
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
+                        <th class="text-center"><i class="fa fa-picture-o"></i></th>
+                        <th>Date Approved</th>
+                        <th>{{ trans('cruds.customer.fields.full_name') }}</th>
+                        <th>{{ trans('cruds.customer.fields.mobile_no_1') }}</th>
+                        <th>{{ trans('cruds.customer.fields.email') }}</th>
+                        <th>{{ trans('cruds.loan.fields.loan_amount') }}</th>
+                        <th>{{ trans('cruds.loan.fields.status') }}</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($loanAmounts as $key => $loanAmount)
-                        <tr data-entry-id="{{ $loanAmount->id }}">
+                    @foreach($loans as $key => $loan)
+                        @php
+                            $sate_join = strtotime($loan->updated_at);
+                            $date_join = date('F d, Y H:i:sa', $sate_join);
+                        @endphp
+                        <tr  data-entry-id="{{ $loan->id }}">
+                            <td class="text-center">
+                                <div class="c-avatar"><img src="{{ asset('img/profile/default.png') }}" alt="" class="c-avatar-img"></div>
+                            </td>
+                            <td>{{ $date_join }}</td>
                             <td>
-
+                                <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
+                                    {{ $loan->customer->first_name ?? '' }} {{ $loan->customer->last_name ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $loanAmount->id ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
+                                    {{ $loan->customer->mobile_no_1 ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $loanAmount->loan->viewed ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
+                                    {{ $loan->customer->email ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $loanAmount->sub_total ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
+                                    {{ $loan->loan_amount ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $loanAmount->interest ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
+                                    {{ App\Loan::STATUS_SELECT[$loan->status] ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $loanAmount->total ?? '' }}
-                            </td>
-                            <td>
-                                {{ $loanAmount->paid ?? '' }}
-                            </td>
-                            <td>
-                                {{ $loanAmount->balance ?? '' }}
-                            </td>
-                            <td>
-                                {{ $loanAmount->loan_date ?? '' }}
-                            </td>
-                            <td>
-                                {{ $loanAmount->due_date ?? '' }}
-                            </td>
-                            <td>
-                                @can('loan_amount_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.loan-amounts.show', $loanAmount->id) }}">
+                                @can('loan_show')
+                                    <a class="btn btn-xs btn-success" href="{{ route('admin.customers.show', $loan->customer->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
-
-                                @can('loan_amount_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.loan-amounts.edit', $loanAmount->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
-                                @can('loan_amount_delete')
-                                    <form action="{{ route('admin.loan-amounts.destroy', $loanAmount->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
+                                @endcan  
                             </td>
-
                         </tr>
                     @endforeach
                 </tbody>
@@ -125,49 +79,19 @@
 @parent
 <script>
     $(function () {
-  let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('loan_amount_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-  let deleteButton = {
-    text: deleteButtonTrans,
-    url: "{{ route('admin.loan-amounts.massDestroy') }}",
-    className: 'btn-danger',
-    action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-          return $(entry).data('entry-id')
-      });
-
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
-
-        return
-      }
-
-      if (confirm('{{ trans('global.areYouSure') }}')) {
-        $.ajax({
-          headers: {'x-csrf-token': _token},
-          method: 'POST',
-          url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
-      }
-    }
-  }
-  dtButtons.push(deleteButton)
-@endcan
-
-  $.extend(true, $.fn.dataTable.defaults, {
-    orderCellsTop: true,
-    order: [[ 1, 'desc' ]],
-    pageLength: 50,
-  });
-  let table = $('.datatable-LoanAmount:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-      $($.fn.dataTable.tables(true)).DataTable()
-          .columns.adjust();
-  });
-  
-})
+    let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+    $.extend(true, $.fn.dataTable.defaults, {
+        orderCellsTop: true,
+        order: [[ 1, 'desc' ]],
+        pageLength: 50,
+    });
+    let table = $('.datatable-LoanAmount:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
+    });
+    
+    })
 
 </script>
 @endsection

@@ -14,7 +14,7 @@ class CustomerDocumentActionObserver
         $users = \App\User::whereHas('roles', function ($q) {
             return $q->where('title', 'Admin');
         })->get();
-        Notification::send($users, new DataChangeEmailNotification($data));
+        // Notification::send($users, new DataChangeEmailNotification($data));
     }
 
     public function deleting(CustomerDocument $model)
@@ -23,6 +23,6 @@ class CustomerDocumentActionObserver
         $users = \App\User::whereHas('roles', function ($q) {
             return $q->where('title', 'Admin');
         })->get();
-        Notification::send($users, new DataChangeEmailNotification($data));
+        // Notification::send($users, new DataChangeEmailNotification($data));
     }
 }

@@ -1,32 +1,46 @@
 <?php
 
-Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth:api']], function () {
-    // Permissions
-    Route::apiResource('permissions', 'PermissionsApiController');
+Route::group([
+    'prefix' => 'v1', 
+    'as' => 'api.', 
+    'namespace' => 'Api\V1\Admin'
+], function () {
 
-    // Roles
-    Route::apiResource('roles', 'RolesApiController');
+    Route::group([
+        'middleware' => ['auth:api']
+    ], function() {
 
-    // Users
-    Route::apiResource('users', 'UsersApiController');
+        // Permissions
+        Route::apiResource('permissions', 'PermissionsApiController');
 
-    // Customers
-    Route::post('customers/media', 'CustomersApiController@storeMedia')->name('customers.storeMedia');
-    Route::apiResource('customers', 'CustomersApiController');
+        // Roles
+        Route::apiResource('roles', 'RolesApiController');
 
-    // Customer Documents
-    Route::post('customer-documents/media', 'CustomerDocumentApiController@storeMedia')->name('customer-documents.storeMedia');
-    Route::apiResource('customer-documents', 'CustomerDocumentApiController');
+        // Users
+        Route::apiResource('users', 'UsersApiController');
 
-    // Customer Notes
-    Route::apiResource('customer-notes', 'CustomerNotesApiController');
+        // Customers
+        Route::post('customers/media', 'CustomersApiController@storeMedia')->name('customers.storeMedia');
+        Route::apiResource('customers', 'CustomersApiController');
 
-    // Loans
-    Route::apiResource('loans', 'LoanApiController');
+        // Customer Documents
+        Route::post('customer-documents/media', 'CustomerDocumentApiController@storeMedia')->name('customer-documents.storeMedia');
+        Route::apiResource('customer-documents', 'CustomerDocumentApiController');
 
-    // Loan Amounts
-    Route::apiResource('loan-amounts', 'LoanAmountApiController');
+        // Customer Notes
+        Route::apiResource('customer-notes', 'CustomerNotesApiController');
 
-    // Payments
-    Route::apiResource('payments', 'PaymentApiController');
+        // Loans
+        Route::apiResource('loans', 'LoanApiController');
+
+        // Loan Amounts
+        Route::apiResource('loan-amounts', 'LoanAmountApiController');
+
+        // Payments
+        Route::apiResource('payments', 'PaymentApiController');
+    });
+
+    Route::get('store', 'ApplyApiController@store')->name('store');
 });
+
+

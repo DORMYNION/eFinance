@@ -74,9 +74,15 @@ class CustomersController extends Controller
     {
         abort_if(Gate::denies('customer_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $latest_laon = $customer->load('customerLoans');
+
+        $pending_loan = $latest_laon->customerLoans->where('status', 'Pending')->last();
+
+        // dd($pending_loan);
+
         $customer->load('customerCustomerDocuments', 'customerCustomerNotes', 'customerLoans');
 
-        return view('admin.customers.show', compact('customer'));
+        return view('admin.customers.show', compact('customer', 'pending_loan'));
     }
 
     public function destroy(Customer $customer)

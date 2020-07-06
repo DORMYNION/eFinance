@@ -13,6 +13,7 @@ class CreateLoansTable extends Migration
             $table->boolean('viewed')->default(0)->nullable();
             $table->decimal('loan_amount', 15, 2);
             $table->string('status');
+            $table->string('customer_type')->nullable();
             $table->string('loan_exist');
             $table->string('loan_exist_type')->nullable();
             $table->decimal('loan_exist_amount', 15, 2)->nullable();

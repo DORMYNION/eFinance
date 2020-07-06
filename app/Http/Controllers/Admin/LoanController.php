@@ -19,6 +19,7 @@ class LoanController extends Controller
         abort_if(Gate::denies('loan_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $loans = Loan::all();
+        dd($loans);
 
         return view('admin.loans.index', compact('loans'));
     }
@@ -52,7 +53,7 @@ class LoanController extends Controller
     {
         $loan->update($request->all());
 
-        return redirect()->route('admin.loans.index');
+        return back();
     }
 
     public function show(Loan $loan)
@@ -62,6 +63,19 @@ class LoanController extends Controller
         $loan->load('customer', 'loanLoanAmounts');
 
         return view('admin.loans.show', compact('loan'));
+    }
+
+    public function decline(UpdateLoanRequest $request, Loan $loan)
+    {
+        abort_if(Gate::denies('loan_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
+        $a = $request->all();
+        // dd($a['id']);
+        Loan::where('id', $a['id'])->update(['status' => $a['status']]);
+
+        // $loan->update($request->all());
+
+        return back();
     }
 
     public function destroy(Loan $loan)

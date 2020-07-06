@@ -28,7 +28,7 @@
 <body class="c-app">
     @include('partials.menu')
     <div class="c-wrapper">
-        <header class="c-header c-header-fixed px-3">
+        <header class="c-header c-header-light c-header-fixed">
             <button class="c-header-toggler c-class-toggler d-lg-none mfe-auto" type="button" data-target="#sidebar" data-class="c-sidebar-show">
                 <i class="fas fa-fw fa-bars"></i>
             </button>
@@ -85,6 +85,13 @@
                 </ul>
 
             </ul>
+
+            <div class="c-subheader justify-content-between px-3">
+                <ol class="breadcrumb border-0 m-0 px-0 px-md-3 my-auto">
+                    <li class="breadcrumb-item active h4"><a href="{{ route("admin.home") }}" class="text-dark">Dashboard</a></li>
+                    <li class="breadcrumb-item active h4">@yield('breadcrumb')</li>
+                </ol>
+            </div>
         </header>
 
         <div class="c-body">
@@ -143,12 +150,12 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <script>
         $(function() {
-  let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
+//   let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
   let csvButtonTrans = '{{ trans('global.datatables.csv') }}'
   let excelButtonTrans = '{{ trans('global.datatables.excel') }}'
   let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}'
   let printButtonTrans = '{{ trans('global.datatables.print') }}'
-  let colvisButtonTrans = '{{ trans('global.datatables.colvis') }}'
+//   let colvisButtonTrans = '{{ trans('global.datatables.colvis') }}'
   let selectAllButtonTrans = '{{ trans('global.select_all') }}'
   let selectNoneButtonTrans = '{{ trans('global.deselect_all') }}'
 
@@ -161,53 +168,57 @@
     language: {
       url: languages['{{ app()->getLocale() }}']
     },
-    columnDefs: [{
-        orderable: false,
-        className: 'select-checkbox',
-        targets: 0
-    }, {
-        orderable: false,
-        searchable: false,
-        targets: -1
-    }],
-    select: {
-      style:    'multi+shift',
-      selector: 'td:first-child'
-    },
+    columnDefs: [
+        // {
+        //     orderable: false,
+        //     className: 'select-checkbox',
+        //     targets: 0
+        // },
+        // {
+        //     orderable: false,
+        //     searchable: false,
+        //     targets: -1
+        // }
+    ]
+    ,
+    // select: {
+    //   style:    'multi+shift',
+    //   selector: 'td:first-child'
+    // },
     order: [],
     scrollX: true,
     pageLength: 100,
     dom: 'lBfrtip<"actions">',
     buttons: [
-      {
-        extend: 'selectAll',
-        className: 'btn-primary',
-        text: selectAllButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        },
-        action: function(e, dt) {
-          e.preventDefault()
-          dt.rows().deselect();
-          dt.rows({ search: 'applied' }).select();
-        }
-      },
-      {
-        extend: 'selectNone',
-        className: 'btn-primary',
-        text: selectNoneButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
-      },
-      {
-        extend: 'copy',
-        className: 'btn-default',
-        text: copyButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
-      },
+    //   {
+    //     extend: 'selectAll',
+    //     className: 'btn-primary',
+    //     text: selectAllButtonTrans,
+    //     exportOptions: {
+    //       columns: ':visible'
+    //     },
+    //     action: function(e, dt) {
+    //       e.preventDefault()
+    //       dt.rows().deselect();
+    //       dt.rows({ search: 'applied' }).select();
+    //     }
+    //   },
+    //   {
+    //     extend: 'selectNone',
+    //     className: 'btn-primary',
+    //     text: selectNoneButtonTrans,
+    //     exportOptions: {
+    //       columns: ':visible'
+    //     }
+    //   },
+    //   {
+    //     extend: 'copy',
+    //     className: 'btn-default',
+    //     text: copyButtonTrans,
+    //     exportOptions: {
+    //       columns: ':visible'
+    //     }
+    //   },
       {
         extend: 'csv',
         className: 'btn-default',
@@ -240,14 +251,14 @@
           columns: ':visible'
         }
       },
-      {
-        extend: 'colvis',
-        className: 'btn-default',
-        text: colvisButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
-      }
+    //   {
+    //     extend: 'colvis',
+    //     className: 'btn-default',
+    //     text: colvisButtonTrans,
+    //     exportOptions: {
+    //       columns: ':visible'
+    //     }
+    //   }
     ]
   });
 

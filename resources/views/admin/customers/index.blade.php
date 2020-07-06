@@ -1,11 +1,12 @@
 @extends('layouts.admin')
 @section('content')
+@section('breadcrumb', 'All Users')
 @can('customer_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.customers.create') }}">
+            {{-- <a class="btn btn-success" href="{{ route('admin.customers.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.customer.title_singular') }}
-            </a>
+            </a> --}}
         </div>
     </div>
 @endcan
@@ -16,15 +17,10 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Customer">
-                <thead>
+            <table class=" table table-responsive-sm table-hover table-outline mb-0 datatable datatable-Customer">
+                <thead class="thead-light">
                     <tr>
-                        <th width="10">
-
-                        </th>
-                        <th>
-                            {{ trans('cruds.customer.fields.id') }}
-                        </th>
+                        <th class="text-center"><i class="fa fa-picture-o"></i></th>
                         <th>
                             {{ trans('cruds.customer.fields.first_name') }}
                         </th>
@@ -38,16 +34,7 @@
                             {{ trans('cruds.customer.fields.email') }}
                         </th>
                         <th>
-                            {{ trans('cruds.customer.fields.bank_name') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.customer.fields.account_name') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.customer.fields.account_no') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.customer.fields.status') }}
+                            {{ trans('cruds.customer.fields.date_join') }}
                         </th>
                         <th>
                             &nbsp;
@@ -56,56 +43,44 @@
                 </thead>
                 <tbody>
                     @foreach($customers as $key => $customer)
+                        @php
+                            $sate_join = strtotime($customer->created_at);
+                            $date_join = date('F d, Y H:i:sa', $sate_join);
+                        @endphp
                         <tr data-entry-id="{{ $customer->id }}">
-                            <td>
-
+                            <td class="text-center">
+                                <div class="c-avatar"><img src="{{ asset('img/profile/default.png') }}" alt="" class="c-avatar-img"></div>
                             </td>
                             <td>
-                                {{ $customer->id ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $customer->id) }}">
+                                    {{ $customer->first_name ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $customer->first_name ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $customer->id) }}">
+                                    {{ $customer->last_name ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $customer->last_name ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $customer->id) }}">
+                                    {{ $customer->mobile_no_1 ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $customer->mobile_no_1 ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $customer->id) }}">
+                                    {{ $customer->email ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $customer->email ?? '' }}
-                            </td>
-                            <td>
-                                {{ App\Customer::BANK_NAME_SELECT[$customer->bank_name] ?? '' }}
-                            </td>
-                            <td>
-                                {{ $customer->account_name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $customer->account_no ?? '' }}
-                            </td>
-                            <td>
-                                {{ App\Customer::STATUS_SELECT[$customer->status] ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.customers.show', $customer->id) }}">
+                                    {{ $date_join ?? '' }}
+                                </a>
                             </td>
                             <td>
                                 @can('customer_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.customers.show', $customer->id) }}">
+                                    <a class="btn btn-xs btn-success" href="{{ route('admin.customers.show', $customer->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
-
-                                @can('customer_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.customers.edit', $customer->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
-                                @can('customer_delete')
-                                    <form action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
                                 @endcan
 
                             </td>
@@ -125,49 +100,21 @@
 @parent
 <script>
     $(function () {
-  let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('customer_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-  let deleteButton = {
-    text: deleteButtonTrans,
-    url: "{{ route('admin.customers.massDestroy') }}",
-    className: 'btn-danger',
-    action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-          return $(entry).data('entry-id')
-      });
+    let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
 
-        return
-      }
-
-      if (confirm('{{ trans('global.areYouSure') }}')) {
-        $.ajax({
-          headers: {'x-csrf-token': _token},
-          method: 'POST',
-          url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
-      }
-    }
-  }
-  dtButtons.push(deleteButton)
-@endcan
-
-  $.extend(true, $.fn.dataTable.defaults, {
-    orderCellsTop: true,
-    order: [[ 1, 'desc' ]],
-    pageLength: 50,
-  });
-  let table = $('.datatable-Customer:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-      $($.fn.dataTable.tables(true)).DataTable()
-          .columns.adjust();
-  });
-  
-})
+    $.extend(true, $.fn.dataTable.defaults, {
+        orderCellsTop: true,
+        order: [[ 1, 'desc' ]],
+        pageLength: 50,
+    });
+    let table = $('.datatable-Customer:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
+    });
+    
+    })
 
 </script>
 @endsection

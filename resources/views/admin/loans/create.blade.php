@@ -134,19 +134,18 @@
                 <span class="help-block">{{ trans('cruds.loan.fields.total_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required">{{ trans('cruds.loan.fields.status') }}</label>
-                <select class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status" required>
+                <select name="status" id="status" required hidden>
                     <option value disabled {{ old('status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                     @foreach(App\Loan::STATUS_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('status', 'Pending') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('status'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('status') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.loan.fields.status_helper') }}</span>
+                <select name="customer_type" id="customer_type" required hidden>
+                    <option value disabled {{ old('customer_type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    @foreach(App\Loan::CUSTOMER_TYPE_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('customer_type', 'Old') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">

@@ -1,12 +1,14 @@
 <?php
 
 return [
+    'accept'                               => 'Accept',
     'actions'                              => 'Actions',
     'add'                                  => 'Add',
     'allRightsReserved'                    => 'All rights reserved.',
     'areYouSure'                           => 'Are you sure?',
     'clickHereToVerify'                    => 'Click here to verify',
     'create'                               => 'Create',
+    'continue'                             => 'Continue',
     'dashboard'                            => 'Dashboard',
     'delete'                               => 'Delete',
     'downloadFile'                         => 'Download file',

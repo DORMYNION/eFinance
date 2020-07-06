@@ -14,7 +14,7 @@ class LoanAmountActionObserver
         $users = \App\User::whereHas('roles', function ($q) {
             return $q->where('title', 'Admin');
         })->get();
-        Notification::send($users, new DataChangeEmailNotification($data));
+        // Notification::send($users, new DataChangeEmailNotification($data));
     }
 
     public function updated(LoanAmount $model)
@@ -23,7 +23,7 @@ class LoanAmountActionObserver
         $users = \App\User::whereHas('roles', function ($q) {
             return $q->where('title', 'Admin');
         })->get();
-        Notification::send($users, new DataChangeEmailNotification($data));
+        // Notification::send($users, new DataChangeEmailNotification($data));
     }
 
     public function deleting(LoanAmount $model)
@@ -32,6 +32,6 @@ class LoanAmountActionObserver
         $users = \App\User::whereHas('roles', function ($q) {
             return $q->where('title', 'Admin');
         })->get();
-        Notification::send($users, new DataChangeEmailNotification($data));
+        // Notification::send($users, new DataChangeEmailNotification($data));
     }
 }

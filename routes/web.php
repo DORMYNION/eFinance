@@ -1,6 +1,7 @@
 <?php
 
 Route::redirect('/', '/login');
+// Route::redirect('/', '/agreement');
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));
@@ -14,7 +15,7 @@ Route::get('userVerification/{token}', 'UserVerificationController@approve')->na
 // Admin
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
-    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/', 'DashboardController@index')->name('home');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
@@ -48,6 +49,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Loans
     Route::delete('loans/destroy', 'LoanController@massDestroy')->name('loans.massDestroy');
+    Route::patch('loans/{id}/decline', 'LoanController@decline')->name('loans.decline');
     Route::resource('loans', 'LoanController');
 
     // Loan Amounts
@@ -71,3 +73,8 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
         Route::post('password', 'ChangePasswordController@update')->name('password.update');
     }
 });
+
+Route::get('agreement', 'ApplyController@agreement')->name('agreement');
+// Route::post('apply', 'ApplyController@apply')->name('apply');
+Route::get('apply', 'ApplyController@apply')->name('apply');
+Route::post('apply', 'ApplyController@apply')->name('apply.store');

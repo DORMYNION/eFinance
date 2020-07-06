@@ -34,24 +34,29 @@ class Customer extends Model implements HasMedia {
     ];
 
     const BANK_NAME_SELECT = [
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
-        'Lagos'     => 'Lagos',
+        'Access Bank'                           => 'Access Bank',
+        'Citibank'                              => 'Citibank',
+        'Diamond Bank'                          => 'Diamond Bank',
+        'Dynamic Standard Bank'                 => 'Dynamic Standard Bank',
+        'Ecobank Nigeria'                       => 'Ecobank Nigeria',
+        'Fidelity Bank Nigeria'                 => 'Fidelity Bank Nigeria',
+        'First Bank of Nigeria'                 => 'First Bank of Nigeria',
+        'First City Monument Bank'              => 'First City Monument Bank',
+        'Guaranty Trust Bank'                   => 'Guaranty Trust Bank',
+        'Heritage Bank Plc'                     => 'Heritage Bank Plc',
+        'Jaiz Bank'                             => 'Jaiz Bank',
+        'Keystone Bank Limited'                 => 'Keystone Bank Limited',
+        'Providus Bank Plc'                     => 'Providus Bank Plc',
+        'Polaris Bank'                          => 'Polaris Bank',
+        'Stanbic IBTC Bank Nigeria Limited'     => 'Stanbic IBTC Bank Nigeria Limited',
+        'Standard Chartered Bank'               => 'Standard Chartered Bank',
+        'Sterling Bank'                         => 'Sterling Bank',
+        'Suntrust Bank Nigeria Limited'         => 'Suntrust Bank Nigeria Limited',
+        'Union Bank of Nigeria'                 => 'Union Bank of Nigeria',
+        'United Bank for Africa'                => 'United Bank for Africa',
+        'Unity Bank Plc'                        => 'Unity Bank Plc',
+        'Wema Bank'                             => 'Wema Bank',
+        'Zenith Bank'                           => 'Zenith Bank',
     ];
 
     const GENDER_SELECT = [
@@ -59,17 +64,62 @@ class Customer extends Model implements HasMedia {
         'Female'    => 'Female',
     ];
 
+    const MARITAL_STATUS_SELECT = [
+        'Single'                => 'Single',
+        'Married'               => 'Married',
+        'Seperated/Divorced'    => 'Seperated/Divorced',
+        'Widowed'               => 'Widowed',
+    ];
+
     const EMPLOYERS_LOCAL_GOVERNMENT_AREA_SELECT = [
-        'Alimosho'      => 'Alimosho',
+        'Agege'                => 'Agege',
+        'Ajeromi-Ifelodun'     => 'Ajeromi-Ifelodun',
+        'Alimosho'             => 'Alimosho',
+        'Amuwo-Odofin'         => 'Amuwo-Odofin',
+        'Badagry'              => 'Badagry',
+        'Apapa'                => 'Apapa',
+        'Epe'                  => 'Epe',
+        'Eti Osa'              => 'Eti Osa',
+        'Ibeju-Lekki'          => 'Ibeju-Lekki',
+        'Ifako-Ijaiye'         => 'Ifako-Ijaiye',
+        'Ikeja'                => 'Ikeja',
+        'Ikorodu'              => 'Ikorodu',
+        'Kosofe'               => 'Kosofe',
+        'Lagos Island'         => 'Lagos Island',
+        'Mushin'               => 'Mushin',
+        'Lagos Mainland'       => 'Lagos Mainland',
+        'Ojo'                  => 'Ojo',
+        'Oshodi-Isolo'         => 'Oshodi-Isolo',
+        'Shomolu'              => 'Shomolu',
+        'Surulere'             => 'Surulere',
     ];
 
     const STATUS_SELECT = [
-        'Active'    => 'Active',
-        'Inactive'    => 'Inactive',
+        'Active'        => 'Active',
+        'Inactive'      => 'Inactive',
     ];
 
     const LOCAL_GOVERNMENT_AREA_OF_RESIDENCE_SELECT = [
-        'Alimosho'      => 'Alimosho',
+        'Agege'                => 'Agege',
+        'Ajeromi-Ifelodun'     => 'Ajeromi-Ifelodun',
+        'Alimosho'             => 'Alimosho',
+        'Amuwo-Odofin'         => 'Amuwo-Odofin',
+        'Badagry'              => 'Badagry',
+        'Apapa'                => 'Apapa',
+        'Epe'                  => 'Epe',
+        'Eti Osa'              => 'Eti Osa',
+        'Ibeju-Lekki'          => 'Ibeju-Lekki',
+        'Ifako-Ijaiye'         => 'Ifako-Ijaiye',
+        'Ikeja'                => 'Ikeja',
+        'Ikorodu'              => 'Ikorodu',
+        'Kosofe'               => 'Kosofe',
+        'Lagos Island'         => 'Lagos Island',
+        'Mushin'               => 'Mushin',
+        'Lagos Mainland'       => 'Lagos Mainland',
+        'Ojo'                  => 'Ojo',
+        'Oshodi-Isolo'         => 'Oshodi-Isolo',
+        'Shomolu'              => 'Shomolu',
+        'Surulere'             => 'Surulere',
     ];
 
     protected $dates = [
@@ -183,6 +233,10 @@ class Customer extends Model implements HasMedia {
     }
 
     public function getDateOfBirthAttribute($value) {
+        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+    
+    public function setDateOfBirthAttribute($value) {
         $this->attributes['date_of_birth'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
