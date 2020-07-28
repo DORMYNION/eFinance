@@ -4,11 +4,10 @@ namespace App;
 
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
 class CustomerNote extends Model {
-    use SoftDeletes, Auditable;
+    use Auditable;
 
     public $table = 'customer_notes';
 

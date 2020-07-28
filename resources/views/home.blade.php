@@ -4,69 +4,47 @@
 <div class="content">
 
     <div class="row">
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-3">
             <div class="card text-white bg-gradient-info">
                 <div class="card-body">
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1>{{ number_format($settings1['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold">{{ $settings1['chart_title'] }}</small>
+                    <small class="text-muted text-uppercase font-weight-bold h4">{{ $settings1['chart_title'] }}</small>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-3">
             <div class="card text-white bg-gradient-success">
                 <div class="card-body">
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1>{{ number_format($settings2['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold">{{ $settings2['chart_title'] }}</small>
+                    <small class="text-muted text-uppercase font-weight-bold h4">{{ $settings2['chart_title'] }}</small>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-3">
             <div class="card text-white bg-gradient-warning">
                 <div class="card-body">
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1>{{ number_format($settings3['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold">{{ $settings3['chart_title'] }}</small>
+                    <small class="text-muted text-uppercase font-weight-bold h4">Total Loans Out</small>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-3">
             <div class="card text-white bg-gradient-primary">
                 <div class="card-body">
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1>{{ number_format($settings4['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold">{{ $settings4['chart_title'] }}</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="card text-white bg-gradient-danger">
-                <div class="card-body">
-                    <div class="text-muted text-right mb-2">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="text-value-lg"><h1>{{ number_format($settings5['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold">{{ $settings5['chart_title'] }}</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="card text-white bg-gradient-info">
-                <div class="card-body">
-                    <div class="text-muted text-right mb-2">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="text-value-lg"><h1>{{ number_format($settings6['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold">{{ $settings6['chart_title'] }}</small>
+                    <small class="text-muted text-uppercase font-weight-bold h4">Total Paybacks In</small>
                 </div>
             </div>
         </div>
@@ -94,7 +72,7 @@
                             @foreach($loans as $key => $loan)
                                 @php
                                     $sate_join = strtotime($loan->created_at);
-                                    $date_join = date('F d, Y H:i:sa', $sate_join);
+                                    $date_join = date('D, F d Y H:ia', $sate_join);
                                 @endphp
                                 <tr  data-entry-id="{{ $loan->id }}">
                                     <td class="text-center">
@@ -102,36 +80,34 @@
                                     </td>
                                     <td>{{ $date_join }}</td>
                                     <td>
-                                        <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
-                                            {{ $loan->customer->first_name ?? '' }} {{ $loan->customer->last_name ?? '' }}
+                                        <a class="text-dark" href="{{ route('admin.users.show', $loan->user->id) }}">
+                                            {{ $loan->user->first_name ?? '' }} {{ $loan->user->last_name ?? '' }}
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
-                                            {{ $loan->customer->mobile_no_1 ?? '' }}
+                                        <a class="text-dark" href="{{ route('admin.users.show', $loan->user->id) }}">
+                                            {{ $loan->user->mobile_no_1 ?? '' }}
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
-                                            {{ $loan->customer->email ?? '' }}
+                                        <a class="text-dark" href="{{ route('admin.users.show', $loan->user->id) }}">
+                                            {{ $loan->user->email ?? '' }}
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
-                                            {{ $loan->loan_amount ?? '' }}
+                                        <a class="text-dark" href="{{ route('admin.users.show', $loan->user->id) }}">
+                                            {{ number_format($loan->loan_amount, 2) ?? '' }}
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="text-dark" href="{{ route('admin.customers.show', $loan->customer->id) }}">
+                                        <a class="text-dark" href="{{ route('admin.users.show', $loan->user->id) }}">
                                             {{ App\Loan::STATUS_SELECT[$loan->status] ?? '' }}
                                         </a>
                                     </td>
                                     <td>
-                                        @can('loan_show')
-                                            <a class="btn btn-xs btn-success" href="{{ route('admin.customers.show', $loan->customer->id) }}">
-                                                {{ trans('global.view') }}
-                                            </a>
-                                        @endcan  
+                                        <a class="btn btn-xs btn-success" href="{{ route('admin.users.show', $loan->user->id) }}">
+                                            {{ trans('global.view') }}
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

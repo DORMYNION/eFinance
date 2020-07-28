@@ -40,6 +40,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\AuthGates::class,
             \App\Http\Middleware\SetLocale::class,
             \App\Http\Middleware\VerificationMiddleware::class,
+            // \App\Http\Middleware\CheckDocumentUpload::class,
         ],
 
         'api' => [
@@ -58,6 +59,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'all.notices' => \App\Http\Middleware\AllNotifications::class,
+        'check.document' => \App\Http\Middleware\CheckDocumentUpload::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

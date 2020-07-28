@@ -4,11 +4,9 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
 class Payment extends Model {
-    use SoftDeletes;
 
     public $table = 'payments';
 
@@ -24,15 +22,18 @@ class Payment extends Model {
     ];
 
     protected $fillable = [
-        'loan_id',
-        'loan_amount_id',
-        'payment_method',
         'amount',
+        'status',
+        'loan_id',
+        'user_id',
         'paid_at',
-        'transaction',
+        'reference',
         'created_at',
         'updated_at',
         'deleted_at',
+        'payment_type',
+        'loan_amount_id',
+        'payment_method',
     ];
 
     protected function serializeDate(DateTimeInterface $date) {
@@ -43,8 +44,8 @@ class Payment extends Model {
         return $this->belongsTo(Loan::class, 'loan_id');
     }
 
-    public function loan_amount() {
-        return $this->belongsTo(LoanAmount::class, 'loan_amount_id');
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function getPaidAtAttribute($value) {

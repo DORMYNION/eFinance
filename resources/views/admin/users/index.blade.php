@@ -1,14 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-@can('user_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.users.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.user.title_singular') }}
-            </a>
-        </div>
-    </div>
-@endcan
+
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.user.title_singular') }} {{ trans('global.list') }}
@@ -16,83 +8,64 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-User">
-                <thead>
+            <table class=" table table-responsive-sm table-hover table-outline mb-0 datatable datatable-user">
+                <thead class="thead-light">
                     <tr>
-                        <th width="10">
-
-                        </th>
-                        <th>
-                            {{ trans('cruds.user.fields.id') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.user.fields.name') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.user.fields.email') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.user.fields.email_verified_at') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.user.fields.verified') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.user.fields.roles') }}
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
+                        <th class="text-center"><i class="fa fa-picture-o"></i></th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Mobile No</th>
+                        <th>Email</th>
+                        <th>Date Join</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($users as $key => $user)
+                        @php
+                            $sate_join = strtotime($user->created_at);
+                            $date_join = date('F d, Y H:i:sa', $sate_join);
+                        @endphp
                         <tr data-entry-id="{{ $user->id }}">
-                            <td>
-
+                            <td class="text-center">
+                                <div class="c-avatar">
+                                    @if($user->profile_image)
+                                        <a href="{{  $user->profile_image->getUrl() }}" target="_blank">
+                                            <img class="img-fluid no-border" src="{{ $user->profile_image->getUrl('thumb') }}"  alt="{{ $user->name }} Profile Image">
+                                        </a>
+                                    @else
+                                        <img class="img-fluid no-border" src="{{ asset('img/profile/default.jpeg') }}" alt="{{ $user->name }} Profile Image">
+                                    @endif
                             </td>
                             <td>
-                                {{ $user->id ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.users.show', $user->id) }}">
+                                    {{ $user->first_name ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $user->name ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.users.show', $user->id) }}">
+                                    {{ $user->last_name ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $user->email ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.users.show', $user->id) }}">
+                                    {{ $user->mobile_no_1 ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $user->email_verified_at ?? '' }}
+                                <a class="text-dark" href="{{ route('admin.users.show', $user->id) }}">
+                                    {{ $user->email ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                <span style="display:none">{{ $user->verified ?? '' }}</span>
-                                <input type="checkbox" disabled="disabled" {{ $user->verified ? 'checked' : '' }}>
+                                <a class="text-dark" href="{{ route('admin.users.show', $user->id) }}">
+                                    {{ $date_join ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                @foreach($user->roles as $key => $item)
-                                    <span class="badge badge-info">{{ $item->title }}</span>
-                                @endforeach
-                            </td>
-                            <td>
-                                @can('user_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.users.show', $user->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
-
-                                @can('user_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.users.edit', $user->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
-                                @can('user_delete')
-                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
+                                <a class="btn btn-xs btn-success" href="{{ route('admin.users.show', $user->id) }}">
+                                    {{ trans('global.view') }}
+                                </a>
                             </td>
 
                         </tr>
@@ -111,40 +84,12 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('user_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-  let deleteButton = {
-    text: deleteButtonTrans,
-    url: "{{ route('admin.users.massDestroy') }}",
-    className: 'btn-danger',
-    action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-          return $(entry).data('entry-id')
-      });
 
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
-
-        return
-      }
-
-      if (confirm('{{ trans('global.areYouSure') }}')) {
-        $.ajax({
-          headers: {'x-csrf-token': _token},
-          method: 'POST',
-          url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
-      }
-    }
-  }
-  dtButtons.push(deleteButton)
-@endcan
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 100,
+    pageLength: 50,
   });
   let table = $('.datatable-User:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){

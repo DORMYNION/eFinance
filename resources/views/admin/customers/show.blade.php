@@ -142,6 +142,10 @@
             <div class="card-header h4 font-weight-bolder">Latest Application</div>
             <div class="card-body">
                 @if($pending_loan)
+                    @php
+                        $sate_join = strtotime($pending_loan->created_at);
+                        $date_join = date('D, F d Y H:ia', $sate_join);
+                    @endphp
                     <div class="list-group">
                         <div style="border-radius: 0" class="list-group-item list-group-item-action flex-column align-items-start">
                             <p class="mb-1 card-title font-weight-bold">Loan Amount</p>
@@ -149,7 +153,7 @@
                         </div>
                         <div style="border-radius: 0" class="list-group-item list-group-item-action flex-column align-items-start">
                             <p class="mb-1 card-title font-weight-bold">Request Date</p>
-                            <h3 class="mb-1 card-text">{{ $pending_loan->created_at }}</h3>
+                            <h3 class="mb-1 card-text">{{ $date_join }}</h3>
                         </div>
                         <div style="border-radius: 0" class="list-group-item list-group-item-action flex-column align-items-start">
                             <p class="mb-1 card-title font-weight-bold">Tenor</p>
@@ -231,7 +235,7 @@
                         @foreach($customer->customerLoans as $key => $loan)
                             @php
                                 $sate_join = strtotime($loan->created_at);
-                                $date_applied = date('F d, Y H:i:sa', $sate_join);
+                                $date_applied = date('D, F d Y H:ia', $sate_join);
                             @endphp
                             <tr data-entry-id="{{ $loan->id }}">
                                 <td>{{ $date_applied }}</td>
@@ -261,9 +265,11 @@
                 <div class="modal-body">
                     @method('PATCH')
                     @csrf
+                   
                     <div class="form-group">
                         <label class="required" for="loan_amount">{{ trans('cruds.loan.fields.loan_amount') }}</label>
-                        <input class="form-control {{ $errors->has('loan_amount') ? 'is-invalid' : '' }}" type="number" name="loan_amount" id="loan_amount" value="{{ old('loan_amount', $pending_loan->loan_duration) }}" step="0.01" required>
+                            <input class="slider {{ $errors->has('loan_amount') ? 'is-invalid' : '' }}" type="range" name="loan_amount" value="{{ old('loan_amount', $pending_loan->loan_amount) }}" id="loan_amount" min="100000" max="2000000" step="10000">
+                            {{-- <input class="form-control {{ $errors->has('loan_amount') ? 'is-invalid' : '' }}" type="number" name="loan_amount" id="loan_amount" value="{{ old('loan_amount', $pending_loan->loan_amount) }}" step="0.01" required> --}}
                         @if($errors->has('loan_amount'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('loan_amount') }}
@@ -271,9 +277,12 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.loan.fields.loan_amount_helper') }}</span>
                     </div>
+                    <p>Value: <span id="vamount"></span></p>
+
                     <div class="form-group">
                         <label class="required" for="loan_duration">{{ trans('cruds.loan.fields.loan_duration') }}</label>
-                        <input class="form-control {{ $errors->has('loan_duration') ? 'is-invalid' : '' }}" type="number" name="loan_duration" id="loan_duration" value="{{ old('loan_duration', $pending_loan->loan_duration) }}" step="1" required>
+                        <input class="slider {{ $errors->has('loan_duration') ? 'is-invalid' : '' }}" type="range" name="loan_duration" value="{{ old('loan_duration', $pending_loan->loan_duration) }}" id="loan_duration" min="1" max="9" step="1">
+                        {{-- <input class="form-control {{ $errors->has('loan_duration') ? 'is-invalid' : '' }}" type="number" name="loan_duration" id="loan_duration" value="{{ old('loan_duration', $pending_loan->loan_duration) }}" step="1" required> --}}
                         @if($errors->has('loan_duration'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('loan_duration') }}
@@ -281,9 +290,11 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.loan.fields.loan_duration_helper') }}</span>
                     </div>
+                    <p>Value: <span id="vdays"></span></p>
+
                     <div class="form-group">
                         <label class="required" for="interest">{{ trans('cruds.loan.fields.interest') }}</label>
-                        <input class="form-control {{ $errors->has('interest') ? 'is-invalid' : '' }}" type="number" name="interest" id="interest" value="{{ old('interest', $pending_loan->interest) }}" step="0.01" required>
+                        <input class="form-control {{ $errors->has('interest') ? 'is-invalid' : '' }}" type="number" name="interest" id="interest" value="{{ old('interest', $pending_loan->interest) }}" step="0.01" required readonly>
                         @if($errors->has('interest'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('interest') }}
@@ -293,7 +304,7 @@
                     </div>
                     <div class="form-group">
                         <label class="required" for="total">{{ trans('cruds.loan.fields.total') }}</label>
-                        <input class="form-control {{ $errors->has('total') ? 'is-invalid' : '' }}" type="number" name="total" id="total" value="{{ old('total', $pending_loan->total) }}" step="0.01" required>
+                        <input class="form-control {{ $errors->has('total') ? 'is-invalid' : '' }}" type="number" name="total" id="total" value="{{ old('total', $pending_loan->total) }}" step="0.01" required readonly>
                         @if($errors->has('total'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('total') }}
@@ -312,4 +323,61 @@
     </div>
 </div>
 @endif
+@endsection
+@section('scripts')
+@parent
+<script>
+var amount = document.getElementById("loan_amount");
+var vamount = document.getElementById("vamount");
+var days = document.getElementById("loan_duration");
+var vdays = document.getElementById("vdays");
+// var dispLoan = document.getElementById("disp-Loan");
+var dispCharges = document.getElementById("interest");
+var dispTotal = document.getElementById("total");
+
+// dispLoan.innerHTML = 
+vamount.innerHTML = numberWithCommas(amount.value);
+
+vdays.innerHTML = numberWithCommas(days.value);
+document.getElementById("interest").value = dispCharges.innerHTML  = 6000 *  parseInt(days.value);
+document.getElementById("total").value = dispTotal.innerHTML  = parseInt(amount.value) + (6000 * parseInt(days.value));
+
+amount.oninput = function() {
+    vamount.innerHTML = this.value;
+    calLoan();
+}
+days.oninput = function() {
+    vdays.innerHTML = this.value;
+    calLoan();
+} 
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function calLoan() {
+    var intAmount = parseInt(amount.value);
+    var intDays = parseInt(days.value);
+    var intDay = 1;
+
+    const interestrate = 72/100;
+
+    interest = Math.abs(intAmount*(interestrate/12)*(Math.pow((1+interestrate/12),intDay))/(Math.pow((1+interestrate/12),intDay)-1));
+    total = interest*intDay;
+    if(intDays>1){
+        diff=(total-intAmount)*(intDays-1);
+    }else{
+        diff=0;
+    }
+    total=diff+total;
+    charges= total-intAmount;
+
+    // dispLoan.innerHTML = numberWithCommas(intAmount.toFixed(0));
+    dispCharges.innerHTML  = numberWithCommas(charges.toFixed(0));
+    dispTotal.innerHTML  = numberWithCommas(total.toFixed(0));
+    document.getElementById("interest").value = charges.toFixed(0);
+    document.getElementById("total").value = total.toFixed(0);
+}      
+
+</script>
 @endsection

@@ -11,10 +11,10 @@ class DashboardController extends Controller
     public function index()
     {
         $settings1 = [
-            'chart_title'           => 'Customers',
+            'chart_title'           => 'Users',
             'chart_type'            => 'number_block',
             'report_type'           => 'group_by_date',
-            'model'                 => 'App\\Customer',
+            'model'                 => 'App\\User',
             'group_by_field'        => 'created_at',
             'group_by_period'       => 'day',
             'aggregate_function'    => 'count',
@@ -104,11 +104,11 @@ class DashboardController extends Controller
             'chart_title'           => 'Debt',
             'chart_type'            => 'number_block',
             'report_type'           => 'group_by_date',
-            'model'                 => 'App\\LoanAmount',
+            'model'                 => 'App\\Loan',
             'group_by_field'        => 'loan_date',
             'group_by_period'       => 'day',
             'aggregate_function'    => 'sum',
-            'aggregate_field'       => 'balance',
+            'aggregate_field'       => 'total',
             'filter_field'          => 'created_at',
             'group_by_field_format' => 'Y-m-d',
             'column_class'          => 'col-md-3',
@@ -150,11 +150,11 @@ class DashboardController extends Controller
             'chart_title'           => 'Sub Total',
             'chart_type'            => 'number_block',
             'report_type'           => 'group_by_date',
-            'model'                 => 'App\\LoanAmount',
+            'model'                 => 'App\\Payment',
             'group_by_field'        => 'loan_date',
             'group_by_period'       => 'day',
             'aggregate_function'    => 'sum',
-            'aggregate_field'       => 'sub_total',
+            'aggregate_field'       => 'amount',
             'filter_field'          => 'created_at',
             'group_by_field_format' => 'Y-m-d',
             'column_class'          => 'col-md-3',
@@ -192,261 +192,10 @@ class DashboardController extends Controller
                 ->{$settings4['aggregate_function'] ?? 'count'}($settings4['aggregate_field'] ?? '*');
         }
 
-        $settings5 = [
-            'chart_title'           => 'Interest',
-            'chart_type'            => 'number_block',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\\LoanAmount',
-            'group_by_field'        => 'loan_date',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'sum',
-            'aggregate_field'       => 'interest',
-            'filter_field'          => 'created_at',
-            'group_by_field_format' => 'Y-m-d',
-            'column_class'          => 'col-md-3',
-            'entries_number'        => '5',
-        ];
-
-        $settings5['total_number'] = 0;
-
-        if (class_exists($settings5['model'])) {
-            $settings5['total_number'] = $settings5['model']::when(isset($settings5['filter_field']), function ($query) use ($settings5) {
-                if (isset($settings5['filter_days'])) {
-                    return $query->where(
-                        $settings5['filter_field'],
-                        '>=',
-                        now()->subDays($settings5['filter_days'])->format('Y-m-d')
-                    );
-                } else if (isset($settings5['filter_period'])) {
-                    switch ($settings5['filter_period']) {
-                        case 'week':
-                            $start  = date('Y-m-d', strtotime('last Monday'));
-                            break;
-                        case 'month':
-                            $start = date('Y-m') . '-01';
-                            break;
-                        case 'year':
-                            $start  = date('Y') . '-01-01';
-                            break;
-                    }
-
-                    if (isset($start)) {
-                        return $query->where($settings5['filter_field'], '>=', $start);
-                    }
-                }
-            })
-                ->{$settings5['aggregate_function'] ?? 'count'}($settings5['aggregate_field'] ?? '*');
-        }
-
-        $settings6 = [
-            'chart_title'           => 'Total',
-            'chart_type'            => 'number_block',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\\LoanAmount',
-            'group_by_field'        => 'loan_date',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'sum',
-            'aggregate_field'       => 'total',
-            'filter_field'          => 'created_at',
-            'group_by_field_format' => 'Y-m-d',
-            'column_class'          => 'col-md-3',
-            'entries_number'        => '5',
-        ];
-
-        $settings6['total_number'] = 0;
-
-        if (class_exists($settings6['model'])) {
-            $settings6['total_number'] = $settings6['model']::when(isset($settings6['filter_field']), function ($query) use ($settings6) {
-                if (isset($settings6['filter_days'])) {
-                    return $query->where(
-                        $settings6['filter_field'],
-                        '>=',
-                        now()->subDays($settings6['filter_days'])->format('Y-m-d')
-                    );
-                } else if (isset($settings6['filter_period'])) {
-                    switch ($settings6['filter_period']) {
-                        case 'week':
-                            $start  = date('Y-m-d', strtotime('last Monday'));
-                            break;
-                        case 'month':
-                            $start = date('Y-m') . '-01';
-                            break;
-                        case 'year':
-                            $start  = date('Y') . '-01-01';
-                            break;
-                    }
-
-                    if (isset($start)) {
-                        return $query->where($settings6['filter_field'], '>=', $start);
-                    }
-                }
-            })
-                ->{$settings6['aggregate_function'] ?? 'count'}($settings6['aggregate_field'] ?? '*');
-        }
-
-        $settings7 = [
-            'chart_title'           => 'Credits',
-            'chart_type'            => 'number_block',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\\LoanAmount',
-            'group_by_field'        => 'loan_date',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'sum',
-            'aggregate_field'       => 'paid',
-            'filter_field'          => 'created_at',
-            'group_by_field_format' => 'Y-m-d',
-            'column_class'          => 'col-md-3',
-            'entries_number'        => '5',
-        ];
-
-        $settings7['total_number'] = 0;
-
-        if (class_exists($settings7['model'])) {
-            $settings7['total_number'] = $settings7['model']::when(isset($settings7['filter_field']), function ($query) use ($settings7) {
-                if (isset($settings7['filter_days'])) {
-                    return $query->where(
-                        $settings7['filter_field'],
-                        '>=',
-                        now()->subDays($settings7['filter_days'])->format('Y-m-d')
-                    );
-                } else if (isset($settings7['filter_period'])) {
-                    switch ($settings7['filter_period']) {
-                        case 'week':
-                            $start  = date('Y-m-d', strtotime('last Monday'));
-                            break;
-                        case 'month':
-                            $start = date('Y-m') . '-01';
-                            break;
-                        case 'year':
-                            $start  = date('Y') . '-01-01';
-                            break;
-                    }
-
-                    if (isset($start)) {
-                        return $query->where($settings7['filter_field'], '>=', $start);
-                    }
-                }
-            })
-                ->{$settings7['aggregate_function'] ?? 'count'}($settings7['aggregate_field'] ?? '*');
-        }
-
-        $settings8 = [
-            'chart_title'           => 'loan amount',
-            'chart_type'            => 'number_block',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\\Loan',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'sum',
-            'aggregate_field'       => 'loan_amount',
-            'filter_field'          => 'created_at',
-            'group_by_field_format' => 'Y-m-d H:i:s',
-            'column_class'          => 'col-md-3',
-            'entries_number'        => '5',
-        ];
-
-        $settings8['total_number'] = 0;
-
-        if (class_exists($settings8['model'])) {
-            $settings8['total_number'] = $settings8['model']::when(isset($settings8['filter_field']), function ($query) use ($settings8) {
-                if (isset($settings8['filter_days'])) {
-                    return $query->where(
-                        $settings8['filter_field'],
-                        '>=',
-                        now()->subDays($settings8['filter_days'])->format('Y-m-d')
-                    );
-                } else if (isset($settings8['filter_period'])) {
-                    switch ($settings8['filter_period']) {
-                        case 'week':
-                            $start  = date('Y-m-d', strtotime('last Monday'));
-                            break;
-                        case 'month':
-                            $start = date('Y-m') . '-01';
-                            break;
-                        case 'year':
-                            $start  = date('Y') . '-01-01';
-                            break;
-                    }
-
-                    if (isset($start)) {
-                        return $query->where($settings8['filter_field'], '>=', $start);
-                    }
-                }
-            })
-                ->{$settings8['aggregate_function'] ?? 'count'}($settings8['aggregate_field'] ?? '*');
-        }
-
-        $settings9 = [
-            'chart_title'           => 'Latest Customers',
-            'chart_type'            => 'latest_entries',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\\Customer',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
-            'group_by_field_format' => 'Y-m-d H:i:s',
-            'column_class'          => 'col-md-6',
-            'entries_number'        => '5',
-            'fields'                => [
-                'id'          => '',
-                'first_name'  => '',
-                'bvn'         => '',
-                'last_name'   => '',
-                'mobile_no_1' => '',
-                'email'       => '',
-            ],
-        ];
-
-        $settings9['data'] = [];
-
-        if (class_exists($settings9['model'])) {
-            $settings9['data'] = $settings9['model']::latest()
-                ->take($settings9['entries_number'])
-                ->get();
-        }
-
-        if (!array_key_exists('fields', $settings9)) {
-            $settings9['fields'] = [];
-        }
-
-        $settings10 = [
-            'chart_title'           => 'Latest Loan Request',
-            'chart_type'            => 'latest_entries',
-            'report_type'           => 'group_by_date',
-            'model'                 => 'App\\Loan',
-            'group_by_field'        => 'created_at',
-            'group_by_period'       => 'day',
-            'aggregate_function'    => 'count',
-            'filter_field'          => 'created_at',
-            'group_by_field_format' => 'Y-m-d H:i:s',
-            'column_class'          => 'col-md-6',
-            'entries_number'        => '5',
-            'fields'                => [
-                'id'          => '',
-                'customer'    => 'first_name',
-                'loan_amount' => '',
-                'status'      => '',
-            ],
-        ];
-
-        $settings10['data'] = [];
-
-        if (class_exists($settings10['model'])) {
-            $settings10['data'] = $settings10['model']::latest()
-                ->take($settings10['entries_number'])
-                ->get();
-        }
-
-        if (!array_key_exists('fields', $settings10)) {
-            $settings10['fields'] = [];
-        }
-
-        // $customers = Customer::all()->pluck();
         $loans = Loan::all();
 
         // dd($loans);
 
-        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'settings5', 'settings6', 'settings7', 'settings8', 'settings9', 'settings10', 'loans'));
+        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'loans'));
     }
 }

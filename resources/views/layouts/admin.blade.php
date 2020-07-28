@@ -21,11 +21,20 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     @yield('styles')
+    <style>
+        body {
+            font-family: "Muli", sans-serif !important;
+        }
+    </style>
 </head>
 
-<body class="c-app">
+<body class="c-app" style="'Muli', sans-serif !important;">
+
     @include('partials.menu')
     <div class="c-wrapper">
         <header class="c-header c-header-light c-header-fixed">
@@ -38,6 +47,14 @@
             <button class="c-header-toggler c-class-toggler mfs-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true">
                 <i class="fas fa-fw fa-bars"></i>
             </button>
+
+            <ul class="row c-sidebar-nav pt-4">
+                <li class="col-md-3">
+                    <select class="searchable-field form-control">
+        
+                    </select>
+                </li>
+            </ul>
 
             <ul class="c-header-nav ml-auto">
                 @if(count(config('panel.available_languages', [])) > 1)
@@ -86,7 +103,7 @@
 
             </ul>
 
-            <div class="c-subheader justify-content-between px-3">
+            <div class="c-subheader justify-content-between px-3 d-none">
                 <ol class="breadcrumb border-0 m-0 px-0 px-md-3 my-auto">
                     <li class="breadcrumb-item active h4"><a href="{{ route("admin.home") }}" class="text-dark">Dashboard</a></li>
                     <li class="breadcrumb-item active h4">@yield('breadcrumb')</li>

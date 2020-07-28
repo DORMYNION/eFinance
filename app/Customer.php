@@ -5,7 +5,6 @@ namespace App;
 use App\Traits\Auditable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -13,7 +12,7 @@ use \DateTimeInterface;
 
 class Customer extends Model implements HasMedia {
 
-    use SoftDeletes, HasMediaTrait, Auditable;
+    use HasMediaTrait, Auditable;
 
     public $table = 'customers';
 
@@ -124,7 +123,6 @@ class Customer extends Model implements HasMedia {
 
     protected $dates = [
         'date_of_birth',
-        'email_verified_at',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -195,9 +193,6 @@ class Customer extends Model implements HasMedia {
         'employers_land_mark',
         'employers_state',
         'employers_local_government_area',
-        'password',
-        'email_verified_at',
-        'remember_token',
         'bank_name',
         'account_name',
         'account_no',

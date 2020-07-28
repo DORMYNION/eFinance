@@ -1,12 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card mx-4">
-            <div class="card-body p-4">
-                <h1>{{ trans('panel.site_title') }}</h1>
 
-                <p class="text-muted">{{ trans('global.login') }}</p>
+<div class="card login-card">
+    <div class="row no-gutters">
+        <div class="col-md-5">
+            <img src="{{ asset('img/login.jpeg') }}" alt="login" class="login-card-img">
+        </div>
+        <div class="col-md-7">
+            <div class="card-body">
+                <div class="brand-wrapper">
+                    <img src="{{ asset('img/efinance-logo.png')}}" alt="logo" class="logo">
+                </div>
+                <p class="login-card-description">Sign into your account</p>
 
                 @if(session('message'))
                     <div class="alert alert-info" role="alert">
@@ -16,30 +21,19 @@
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                <i class="fa fa-user"></i>
-                            </span>
-                        </div>
-
+                    
+                    <div class="form-group">
+                        <label for="email" class="sr-only">Email</label>
                         <input id="email" name="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" value="{{ old('email', null) }}">
-
                         @if($errors->has('email'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('email') }}
                             </div>
                         @endif
                     </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                        </div>
-
+                    <div class="form-group mb-4">
+                        <label for="password" class="sr-only">Password</label>
                         <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" required placeholder="{{ trans('global.login_password') }}">
-
                         @if($errors->has('password'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('password') }}
@@ -47,35 +41,31 @@
                         @endif
                     </div>
 
-                    <div class="input-group mb-4">
+                    <div class="form-group mb-4">
                         <div class="form-check checkbox">
                             <input class="form-check-input" name="remember" type="checkbox" id="remember" style="vertical-align: middle;" />
-                            <label class="form-check-label" for="remember" style="vertical-align: middle;">
+                            <label class="forgot-password-link pl-3" for="remember" style="vertical-align: middle;">
                                 {{ trans('global.remember_me') }}
                             </label>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-6">
-                            <button type="submit" class="btn btn-primary px-4">
-                                {{ trans('global.login') }}
-                            </button>
-                        </div>
-                        <div class="col-6 text-right">
-                            @if(Route::has('password.request'))
-                                <a class="btn btn-link px-0" href="{{ route('password.request') }}">
-                                    {{ trans('global.forgot_password') }}
-                                </a><br>
-                            @endif
-                            <a class="btn btn-link px-0" href="{{ route('register') }}">
-                                {{ trans('global.register') }}
-                            </a>
-                        </div>
-                    </div>
+                    <button id="login" type="submit" class="btn btn-block login-btn mb-4">
+                        {{ trans('global.login') }}
+                    </button>
+                    
                 </form>
+                @if(Route::has('password.request'))
+                    <a class="forgot-password-link" href="{{ route('password.request') }}">
+                        {{ trans('global.forgot_password') }}
+                    </a><br>
+                @endif
+                <nav class="login-card-footer-nav">
+                    <a href="https://www.efinanceng.com/terms.php">Terms of use.</a>
+                    <a href="https://efinanceng.com/privacy.php">Privacy policy</a>
+                </nav>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

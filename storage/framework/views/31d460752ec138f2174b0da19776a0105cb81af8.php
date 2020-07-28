@@ -3,69 +3,47 @@
 <div class="content">
 
     <div class="row">
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-3">
             <div class="card text-white bg-gradient-info">
                 <div class="card-body">
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1><?php echo e(number_format($settings1['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold"><?php echo e($settings1['chart_title']); ?></small>
+                    <small class="text-muted text-uppercase font-weight-bold h4"><?php echo e($settings1['chart_title']); ?></small>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-3">
             <div class="card text-white bg-gradient-success">
                 <div class="card-body">
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1><?php echo e(number_format($settings2['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold"><?php echo e($settings2['chart_title']); ?></small>
+                    <small class="text-muted text-uppercase font-weight-bold h4"><?php echo e($settings2['chart_title']); ?></small>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-3">
             <div class="card text-white bg-gradient-warning">
                 <div class="card-body">
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1><?php echo e(number_format($settings3['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold"><?php echo e($settings3['chart_title']); ?></small>
+                    <small class="text-muted text-uppercase font-weight-bold h4">Total Loans Out</small>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-2">
+        <div class="col-sm-6 col-md-3">
             <div class="card text-white bg-gradient-primary">
                 <div class="card-body">
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1><?php echo e(number_format($settings4['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold"><?php echo e($settings4['chart_title']); ?></small>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="card text-white bg-gradient-danger">
-                <div class="card-body">
-                    <div class="text-muted text-right mb-2">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="text-value-lg"><h1><?php echo e(number_format($settings5['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold"><?php echo e($settings5['chart_title']); ?></small>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-2">
-            <div class="card text-white bg-gradient-info">
-                <div class="card-body">
-                    <div class="text-muted text-right mb-2">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="text-value-lg"><h1><?php echo e(number_format($settings6['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold"><?php echo e($settings6['chart_title']); ?></small>
+                    <small class="text-muted text-uppercase font-weight-bold h4">Total Paybacks In</small>
                 </div>
             </div>
         </div>
@@ -93,7 +71,7 @@
                             <?php $__currentLoopData = $loans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $loan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php
                                     $sate_join = strtotime($loan->created_at);
-                                    $date_join = date('F d, Y H:i:sa', $sate_join);
+                                    $date_join = date('D, F d Y H:ia', $sate_join);
                                 ?>
                                 <tr  data-entry-id="<?php echo e($loan->id); ?>">
                                     <td class="text-center">
@@ -101,42 +79,40 @@
                                     </td>
                                     <td><?php echo e($date_join); ?></td>
                                     <td>
-                                        <a class="text-dark" href="<?php echo e(route('admin.customers.show', $loan->customer->id)); ?>">
-                                            <?php echo e($loan->customer->first_name ?? ''); ?> <?php echo e($loan->customer->last_name ?? ''); ?>
+                                        <a class="text-dark" href="<?php echo e(route('admin.users.show', $loan->user->id)); ?>">
+                                            <?php echo e($loan->user->first_name ?? ''); ?> <?php echo e($loan->user->last_name ?? ''); ?>
 
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="text-dark" href="<?php echo e(route('admin.customers.show', $loan->customer->id)); ?>">
-                                            <?php echo e($loan->customer->mobile_no_1 ?? ''); ?>
+                                        <a class="text-dark" href="<?php echo e(route('admin.users.show', $loan->user->id)); ?>">
+                                            <?php echo e($loan->user->mobile_no_1 ?? ''); ?>
 
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="text-dark" href="<?php echo e(route('admin.customers.show', $loan->customer->id)); ?>">
-                                            <?php echo e($loan->customer->email ?? ''); ?>
+                                        <a class="text-dark" href="<?php echo e(route('admin.users.show', $loan->user->id)); ?>">
+                                            <?php echo e($loan->user->email ?? ''); ?>
 
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="text-dark" href="<?php echo e(route('admin.customers.show', $loan->customer->id)); ?>">
-                                            <?php echo e($loan->loan_amount ?? ''); ?>
+                                        <a class="text-dark" href="<?php echo e(route('admin.users.show', $loan->user->id)); ?>">
+                                            <?php echo e(number_format($loan->loan_amount, 2) ?? ''); ?>
 
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="text-dark" href="<?php echo e(route('admin.customers.show', $loan->customer->id)); ?>">
+                                        <a class="text-dark" href="<?php echo e(route('admin.users.show', $loan->user->id)); ?>">
                                             <?php echo e(App\Loan::STATUS_SELECT[$loan->status] ?? ''); ?>
 
                                         </a>
                                     </td>
                                     <td>
-                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('loan_show')): ?>
-                                            <a class="btn btn-xs btn-success" href="<?php echo e(route('admin.customers.show', $loan->customer->id)); ?>">
-                                                <?php echo e(trans('global.view')); ?>
+                                        <a class="btn btn-xs btn-success" href="<?php echo e(route('admin.users.show', $loan->user->id)); ?>">
+                                            <?php echo e(trans('global.view')); ?>
 
-                                            </a>
-                                        <?php endif; ?>  
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -4,12 +4,11 @@ namespace App;
 
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
 class Loan extends Model
 {
-    use SoftDeletes, Auditable;
+    use Auditable;
 
     public $table = 'loans';
 
@@ -30,10 +29,16 @@ class Loan extends Model
     ];
 
     const STATUS_SELECT = [
-        'Pending'   => 'Pending',
-        'Reviewing' => 'Reviewing',
-        'Approved'  => 'Approved',
-        'Declined'  => 'Declined',
+        'Due'                   => 'Due',
+        'Paid'                  => 'Paid',
+        'Pending'               => 'Pending',
+        'Expired'               => 'Expired',
+        'Declined'              => 'Declined',
+        'Approved'              => 'Approved',
+        'Disbursed'             => 'Disbursed',
+        'Fully Paid'            => 'Fully Paid',
+        'Partially Paid'        => 'Partially Paid',
+        'Awaiting Disbursment'  => 'Awaiting Disbursment',
     ];
 
     const CUSTOMER_TYPE_SELECT = [
@@ -42,7 +47,7 @@ class Loan extends Model
     ];
 
     protected $fillable = [
-        'customer_id',
+        'user_id',
         'loan_exist',
         'loan_exist_type',
         'loan_exist_amount',
@@ -93,13 +98,18 @@ class Loan extends Model
         Loan::observe(new \App\Observers\LoanActionObserver);
     }
 
-    public function loanLoanAmounts()
+    public function loanAmounts()
     {
         return $this->hasMany(LoanAmount::class, 'loan_id', 'id');
     }
 
-    public function customer()
+    public function loanRepayments()
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->hasMany(LoanRepayment::class, 'loan_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

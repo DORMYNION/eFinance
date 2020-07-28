@@ -21,7 +21,8 @@
         "laravel/ui": "^2.0",
         "laraveldaily/laravel-charts": "^0.1.20",
         "spatie/laravel-medialibrary": "^7.19",
-        "yajra/laravel-datatables-oracle": "^9.10"
+        "yajra/laravel-datatables-oracle": "^9.10",
+        "unicodeveloper/laravel-paystack": "1.0.*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
