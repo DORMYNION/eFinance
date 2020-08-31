@@ -29,7 +29,13 @@
                         @endphp
                         <tr  data-entry-id="{{ $loan->id }}">
                             <td class="text-center">
-                                <div class="c-avatar"><img src="{{ asset('img/profile/default.png') }}" alt="" class="c-avatar-img"></div>
+                                <div class="c-avatar">
+                                    @if($loan->user->profile_image)
+                                        <img class="c-avatar-img no-border" src="{{  $loan->user->profile_image->getUrl() }}"  alt="">
+                                    @else
+                                        <img class="c-avatar-img no-border" src="{{ asset('img/profile/default.jpeg') }}" alt="">
+                                    @endif
+                                </div>
                             </td>
                             <td>{{ $date_join }}</td>
                             <td>

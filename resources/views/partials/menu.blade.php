@@ -32,13 +32,23 @@
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a href="{{ route("admin.users.index") }}" class="c-sidebar-nav-link {{ request()->is('admin/customers') || request()->is('admin/customers/*') ? 'active' : '' }}">
+            <a href="{{ route("admin.users.index") }}" class="c-sidebar-nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
                 <i class="fa-fw fas fa-user-plus c-sidebar-nav-icon">
 
                 </i>
                 All Users
             </a>
         </li>
+        @can('admin')
+            <li class="c-sidebar-nav-item">
+                <a href="{{ route("admin.staffs.index") }}" class="c-sidebar-nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                    <i class="fa-fw fas fa-users c-sidebar-nav-icon">
+
+                    </i>
+                    All Staff
+                </a>
+            </li>                
+        @endcan
         @if(file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
            <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{ request()->is('profile/password') || request()->is('profile/password/*') ? 'active' : '' }}" href="{{ route('profile.password.edit') }}">

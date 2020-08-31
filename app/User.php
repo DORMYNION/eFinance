@@ -54,6 +54,7 @@ class User extends Authenticatable implements HasMedia
         'land_mark',
         'last_name',
         'bank_name',
+        'plan_code',
         'account_no',
         'first_name',
         'created_at',
@@ -63,8 +64,10 @@ class User extends Authenticatable implements HasMedia
         'mobile_no_2',
         'verified_at',
         'account_name',
+        'customer_code',
         'date_of_birth',
         'marital_status',
+        'payment_method',
         'remember_token',
         'employers_name',
         'monthly_income',
@@ -105,6 +108,13 @@ class User extends Authenticatable implements HasMedia
     const STATUS_SELECT = [
         'Active'        => 'Active',
         'Inactive'      => 'Inactive',
+    ];
+
+    const PAYMENT_METHOD_SELECT = [
+        'Paystack'        => 'Paystack',
+        'Remita'          => 'Remita',
+        'Cheque'          => 'Cheque',
+        'Bank Transfer'   => 'Bank Transfer',
     ];
 
     const BANK_NAME_SELECT = [
@@ -238,22 +248,22 @@ class User extends Authenticatable implements HasMedia
                 $user->verified_at = Carbon::now()->format(config('panel.date_format') . ' ' . config('panel.time_format'));
                 $user->save();
             } elseif (!$user->verification_token) {
-                // $token     = Str::random(64);
-                // $usedToken = User::where('verification_token', $token)->first();
+                $token     = Str::random(64);
+                $usedToken = User::where('verification_token', $token)->first();
 
-                // while ($usedToken) {
-                //     $token     = Str::random(64);
-                //     $usedToken = User::where('verification_token', $token)->first();
-                // }
+                while ($usedToken) {
+                    $token     = Str::random(64);
+                    $usedToken = User::where('verification_token', $token)->first();
+                }
 
-                // $user->verification_token = $token;
-                // $user->save();
+                $user->verification_token = $token;
+                $user->save();
 
-                // $registrationRole = config('panel.registration_default_role');
+                $registrationRole = 3;
 
-                // if (!$user->roles()->get()->contains($registrationRole)) {
-                //     $user->roles()->attach($registrationRole);
-                // }
+                if (!$user->roles()->get()->contains($registrationRole)) {
+                    $user->roles()->attach($registrationRole);
+                }
 
                 // $user->notify(new VerifyUserNotification($user));
             }

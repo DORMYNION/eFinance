@@ -33,7 +33,7 @@
     </style>
 </head>
 
-<body class="c-app" style="'Muli', sans-serif !important;">
+<body class="c-app">
 
     <?php echo $__env->make('partials.menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <div class="c-wrapper">
@@ -48,71 +48,13 @@
                 <i class="fas fa-fw fa-bars"></i>
             </button>
 
-            <ul class="row c-sidebar-nav pt-4">
+            <ul class="row c-sidebar-nav pt-3" style="margin-top: -1px">
                 <li class="col-md-3">
                     <select class="searchable-field form-control">
         
                     </select>
                 </li>
             </ul>
-
-            <ul class="c-header-nav ml-auto">
-                <?php if(count(config('panel.available_languages', [])) > 1): ?>
-                    <li class="c-header-nav-item dropdown d-md-down-none">
-                        <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <?php echo e(strtoupper(app()->getLocale())); ?>
-
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <?php $__currentLoopData = config('panel.available_languages'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $langLocale => $langName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <a class="dropdown-item" href="<?php echo e(url()->current()); ?>?change_language=<?php echo e($langLocale); ?>"><?php echo e(strtoupper($langLocale)); ?> (<?php echo e($langName); ?>)</a>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </div>
-                    </li>
-                <?php endif; ?>
-
-                <ul class="c-header-nav ml-auto">
-                    <li class="c-header-nav-item dropdown notifications-menu">
-                        <a href="#" class="c-header-nav-link" data-toggle="dropdown">
-                            <i class="far fa-bell"></i>
-                            <?php ($alertsCount = \Auth::user()->userUserAlerts()->where('read', false)->count()); ?>
-                                <?php if($alertsCount > 0): ?>
-                                    <span class="badge badge-warning navbar-badge">
-                                        <?php echo e($alertsCount); ?>
-
-                                    </span>
-                                <?php endif; ?>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <?php if(count($alerts = \Auth::user()->userUserAlerts()->withPivot('read')->limit(10)->orderBy('created_at', 'ASC')->get()->reverse()) > 0): ?>
-                                <?php $__currentLoopData = $alerts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $alert): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <div class="dropdown-item">
-                                        <a href="<?php echo e($alert->alert_link ? $alert->alert_link : "#"); ?>" target="_blank" rel="noopener noreferrer">
-                                            <?php if($alert->pivot->read === 0): ?> <strong> <?php endif; ?>
-                                                <?php echo e($alert->alert_text); ?>
-
-                                                <?php if($alert->pivot->read === 0): ?> </strong> <?php endif; ?>
-                                        </a>
-                                    </div>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php else: ?>
-                                <div class="text-center">
-                                    <?php echo e(trans('global.no_alerts')); ?>
-
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    </li>
-                </ul>
-
-            </ul>
-
-            <div class="c-subheader justify-content-between px-3 d-none">
-                <ol class="breadcrumb border-0 m-0 px-0 px-md-3 my-auto">
-                    <li class="breadcrumb-item active h4"><a href="<?php echo e(route("admin.home")); ?>" class="text-dark">Dashboard</a></li>
-                    <li class="breadcrumb-item active h4"><?php echo $__env->yieldContent('breadcrumb'); ?></li>
-                </ol>
-            </div>
         </header>
 
         <div class="c-body">

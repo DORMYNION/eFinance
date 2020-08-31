@@ -1,0 +1,60 @@
+[10-Aug-2020 20:40:45 Africa/Lagos] PHP Warning:  Uncaught ErrorException: require(/home/mcviqlzs/efinance/routes/console.php): failed to open stream: No such file or directory in /home/mcviqlzs/efinance/app/Console/Kernel.php:39
+Stack trace:
+#0 /home/mcviqlzs/efinance/app/Console/Kernel.php(39): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require(/home/m...', '/home/mcviqlzs/...', 39, Array)
+#1 /home/mcviqlzs/efinance/app/Console/Kernel.php(39): require()
+#2 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(316): App\Console\Kernel->commands()
+#3 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(261): Illuminate\Foundation\Console\Kernel->bootstrap()
+#4 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(261): Illuminate\Foundation\Console\Kernel->call('help', Array)
+#5 /home/mcviqlzs/efinance/vendor/facade/ignition/src/Http/Controllers/HealthCheckController.php(19): Illuminate\Support\Facades\Facade::__callSta in /home/mcviqlzs/efinance/app/Console/Kernel.php on line 39
+[10-Aug-2020 20:40:45 Africa/Lagos] PHP Fatal error:  App\Console\Kernel::commands(): Failed opening required '/home/mcviqlzs/efinance/routes/console.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/mcviqlzs/efinance/app/Console/Kernel.php on line 39
+[10-Aug-2020 20:41:14 Africa/Lagos] PHP Warning:  Uncaught ErrorException: require(/home/mcviqlzs/efinance/routes/console.php): failed to open stream: No such file or directory in /home/mcviqlzs/efinance/app/Console/Kernel.php:39
+Stack trace:
+#0 /home/mcviqlzs/efinance/app/Console/Kernel.php(39): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require(/home/m...', '/home/mcviqlzs/...', 39, Array)
+#1 /home/mcviqlzs/efinance/app/Console/Kernel.php(39): require()
+#2 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(316): App\Console\Kernel->commands()
+#3 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(261): Illuminate\Foundation\Console\Kernel->bootstrap()
+#4 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(261): Illuminate\Foundation\Console\Kernel->call('help', Array)
+#5 /home/mcviqlzs/efinance/vendor/facade/ignition/src/Http/Controllers/HealthCheckController.php(19): Illuminate\Support\Facades\Facade::__callSta in /home/mcviqlzs/efinance/app/Console/Kernel.php on line 39
+[10-Aug-2020 20:41:14 Africa/Lagos] PHP Fatal error:  App\Console\Kernel::commands(): Failed opening required '/home/mcviqlzs/efinance/routes/console.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/mcviqlzs/efinance/app/Console/Kernel.php on line 39
+[11-Aug-2020 23:28:42 Africa/Lagos] PHP Warning:  Uncaught ErrorException: require(/home/mcviqlzs/efinance/routes/console.php): failed to open stream: No such file or directory in /home/mcviqlzs/efinance/app/Console/Kernel.php:39
+Stack trace:
+#0 /home/mcviqlzs/efinance/app/Console/Kernel.php(39): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require(/home/m...', '/home/mcviqlzs/...', 39, Array)
+#1 /home/mcviqlzs/efinance/app/Console/Kernel.php(39): require()
+#2 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(316): App\Console\Kernel->commands()
+#3 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(261): Illuminate\Foundation\Console\Kernel->bootstrap()
+#4 /home/mcviqlzs/efinance/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(261): Illuminate\Foundation\Console\Kernel->call('help', Array)
+#5 /home/mcviqlzs/efinance/vendor/facade/ignition/src/Http/Controllers/HealthCheckController.php(19): Illuminate\Support\Facades\Facade::__callSta in /home/mcviqlzs/efinance/app/Console/Kernel.php on line 39
+[11-Aug-2020 23:28:42 Africa/Lagos] PHP Fatal error:  App\Console\Kernel::commands(): Failed opening required '/home/mcviqlzs/efinance/routes/console.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/mcviqlzs/efinance/app/Console/Kernel.php on line 39
+[16-Aug-2020 12:56:06 Africa/Lagos] PHP Warning:  Uncaught ErrorException: require(/home/sh40gnnvgawn/public_html/app/routes/console.php): failed to open stream: No such file or directory in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php:39
+Stack trace:
+#0 /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php(39): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require(/home/s...', '/home/sh40gnnvg...', 39, Array)
+#1 /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php(39): require()
+#2 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(316): App\Console\Kernel->commands()
+#3 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(261): Illuminate\Foundation\Console\Kernel->bootstrap()
+#4 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(261): Illuminate\Foundation\Console\Kernel->call('help', Array)
+#5 /home/sh40gnnvgawn/public_html/app/vendor/facade/ignition/src/Http in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php on line 39
+[16-Aug-2020 12:56:06 Africa/Lagos] PHP Fatal error:  App\Console\Kernel::commands(): Failed opening required '/home/sh40gnnvgawn/public_html/app/routes/console.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php on line 39
+[17-Aug-2020 01:22:19 Africa/Lagos] PHP Warning:  Uncaught ErrorException: require(/home/sh40gnnvgawn/public_html/app/routes/console.php): failed to open stream: No such file or directory in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php:39
+Stack trace:
+#0 /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php(39): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require(/home/s...', '/home/sh40gnnvg...', 39, Array)
+#1 /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php(39): require()
+#2 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(316): App\Console\Kernel->commands()
+#3 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(261): Illuminate\Foundation\Console\Kernel->bootstrap()
+#4 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(261): Illuminate\Foundation\Console\Kernel->call('storage:link')
+#5 /home/sh40gnnvgawn/public_html/app/routes/web.php(5): Illuminate\ in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php on line 39
+[17-Aug-2020 01:22:19 Africa/Lagos] PHP Fatal error:  App\Console\Kernel::commands(): Failed opening required '/home/sh40gnnvgawn/public_html/app/routes/console.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php on line 39
+[17-Aug-2020 01:22:48 Africa/Lagos] PHP Warning:  Uncaught ErrorException: require(/home/sh40gnnvgawn/public_html/app/routes/console.php): failed to open stream: No such file or directory in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php:39
+Stack trace:
+#0 /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php(39): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require(/home/s...', '/home/sh40gnnvg...', 39, Array)
+#1 /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php(39): require()
+#2 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(316): App\Console\Kernel->commands()
+#3 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(261): Illuminate\Foundation\Console\Kernel->bootstrap()
+#4 /home/sh40gnnvgawn/public_html/app/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(261): Illuminate\Foundation\Console\Kernel->call('storage:link')
+#5 /home/sh40gnnvgawn/public_html/app/routes/web.php(5): Illuminate\ in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php on line 39
+[17-Aug-2020 01:22:48 Africa/Lagos] PHP Fatal error:  App\Console\Kernel::commands(): Failed opening required '/home/sh40gnnvgawn/public_html/app/routes/console.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/sh40gnnvgawn/public_html/app/app/Console/Kernel.php on line 39
+[17-Aug-2020 11:00:32 Africa/Lagos] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in /home/sh40gnnvgawn/public_html/app/vendor/intervention/image/src/Intervention/Image/Gd/Decoder.php on line 138
+[18-Aug-2020 12:28:17 Africa/Lagos] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in /home/sh40gnnvgawn/public_html/app/vendor/intervention/image/src/Intervention/Image/Gd/Decoder.php on line 138
+[19-Aug-2020 19:11:58 Africa/Lagos] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in /home/sh40gnnvgawn/public_html/app/vendor/intervention/image/src/Intervention/Image/Gd/Decoder.php on line 138
+[19-Aug-2020 19:13:33 Africa/Lagos] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in /home/sh40gnnvgawn/public_html/app/vendor/intervention/image/src/Intervention/Image/Gd/Decoder.php on line 138
+[20-Aug-2020 10:03:09 Africa/Lagos] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in /home/sh40gnnvgawn/public_html/app/vendor/intervention/image/src/Intervention/Image/Gd/Decoder.php on line 138
+[20-Aug-2020 10:05:29 Africa/Lagos] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 16384 bytes) in /home/sh40gnnvgawn/public_html/app/vendor/intervention/image/src/Intervention/Image/Gd/Decoder.php on line 138

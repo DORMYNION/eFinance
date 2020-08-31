@@ -4,10 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Loan;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'can:staff']);
+    }
+    
     public function index()
     {
         $settings1 = [
@@ -56,10 +63,10 @@ class DashboardController extends Controller
         }
 
         $settings2 = [
-            'chart_title'           => 'Loans',
+            'chart_title'           => 'Disbursed Loans',
             'chart_type'            => 'number_block',
             'report_type'           => 'group_by_date',
-            'model'                 => 'App\\Loan',
+            'model'                 => 'App\\LoanAmount',
             'group_by_field'        => 'created_at',
             'group_by_period'       => 'day',
             'aggregate_function'    => 'count',
@@ -104,7 +111,7 @@ class DashboardController extends Controller
             'chart_title'           => 'Debt',
             'chart_type'            => 'number_block',
             'report_type'           => 'group_by_date',
-            'model'                 => 'App\\Loan',
+            'model'                 => 'App\\LoanAmount',
             'group_by_field'        => 'loan_date',
             'group_by_period'       => 'day',
             'aggregate_function'    => 'sum',
@@ -192,10 +199,10 @@ class DashboardController extends Controller
                 ->{$settings4['aggregate_function'] ?? 'count'}($settings4['aggregate_field'] ?? '*');
         }
 
-        $loans = Loan::all();
+        $loans = Loan::latest('created_at')->get();
 
-        // dd($loans);
+        $isAdmin = DB::table('role_user')->where('role_id', 2)->count();
 
-        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'loans'));
+        return view('home', compact('settings1', 'settings2', 'settings3', 'settings4', 'loans', 'isAdmin'));
     }
 }

@@ -11,7 +11,7 @@ class StorePaymentRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('payment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('payment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }
@@ -31,13 +31,6 @@ class StorePaymentRequest extends FormRequest
                 'required',
             ],
             'amount'         => [
-                'required',
-            ],
-            'paid_at'        => [
-                'required',
-                'date_format:' . config('panel.date_format'),
-            ],
-            'transaction'    => [
                 'required',
             ],
         ];

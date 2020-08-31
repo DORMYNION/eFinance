@@ -45,37 +45,11 @@
                     </div><!-- .col -->
                     <div class="col-md-4">
                         <div class="sp-plan-action card-inner">
-                            @php
-                                // $payback = (int)$current_loan->total;round($cart_total,2)
-                                $payback = round($current_loan->total,2);
-                                // dd($payback);
-                                
-                            @endphp
-                            <div class="sp-plan-btn">
-                                {{-- <form method="POST" action="{{ route('user.payment.pay') }}" accept-charset="UTF-8" role="form">
-                                    @csrf
-
-                                    <input type="hidden" name="email" value="{{ $user->email }}"> 
-                                    <input type="hidden" name="id" value="{{ $current_loan->id }}">
-                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                    <input type="hidden" name="amount" value="{{ $payback }}"> 
-                                    <input type="hidden" name="quantity" value="1">
-                                    <input type="hidden" name="currency" value="NGN">
-                                    <input type="hidden" name="metadata" value="{{ json_encode($array = ['key_name' => 'value',]) }}" > 
-                                    <input type="hidden" name="reference" value="{{ Paystack::genTranxRef() }}"> --}}
-                                    
-                        
-                                    {{-- <button class="btn btn-success" type="submit" value="Pay Now!">Pay Now!</button> --}}
-                                    <a class="btn btn-success" href="{{ route('user.loan.show') }}" value="Pay Now!">Pay Now!</a>
-                                    {{-- <button class="btn btn-success" type="submit" value="Pay Now!">Pay Now!</button> --}}
-                                {{-- </form> --}}
-                                </div>
-                                
-                                <div class="sp-plan-note text-md-center">
-                                    <p class="mb-0">Due Date <span>{{ $current_loan->updated_at }}</span></p>
-                                    <p>Balance: <span>NGN {{ number_format($current_loan->loanAmounts[0]->balance, 2) }}</span></p>
-                                </div>
+                            <div class="sp-plan-note text-md-center">
+                                {{-- <p class="mb-0">Applied On <span>{{ $current_loan->updated_at }}</span></p> --}}
+                                <p>Balance: <span>NGN {{ number_format($current_loan->loanAmounts[0]->balance, 2) }}</span></p>
                             </div>
+                        </div>
                     </div><!-- .col -->
                 </div><!-- .row -->
             </div><!-- .sp-plan -->
@@ -113,9 +87,7 @@
                     </div><!-- .col -->
                     <div class="col-md-4">
                         <div class="sp-plan-action card-inner">
-                            <div class="sp-plan-btn">
-                                {{-- <a href="#" class="btn btn-success" data-toggle="modal" data-target="#acceptLoan"><span>Edit Loan</span></a>
-                                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#declineLoan"><span>Delete Loan</span></a> --}}
+                            <div class="sp-plan-btn"> 
                             </div>
                             <div class="sp-plan-btn">
                             </div>
@@ -214,7 +186,7 @@
                             <div class="sp-plan-btn">
                             </div>
                             <div class="sp-plan-note text-md-center">
-                                <p>Due Date <span>Loan not approved yet</span></p>
+                                <p> <span>Loan not approved yet</span></p>
                             </div>
                         </div>
                     </div><!-- .col -->
@@ -262,6 +234,146 @@
     @endif
 {{-- @endforeach --}}
 
+<!-- Loan Schedule and Payment --> 
+@if ($current_loan !== null && $current_loan->status !== 'Fully Paid')
+<div class="nk-block">
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card card-bordered">
+                <div class="card-inner-group">
+                    <div class="card-inner">
+                        <div class="sp-plan-head">
+                            <h6 class="title">Loan Repayment Plan</h6>                                                                
+                        </div>
+                        <div class="sp-plan-desc sp-plan-desc-mb">
+                            @foreach ($current_loan->loanRepayments as $key => $loanRepayment)
+                            <ul class="row gx-1">
+                                <li class="col-sm-4">
+                                    <p><span class="text-soft">Due on</span> {{ Carbon\Carbon::parse($loanRepayment->due_date)->format('F d, Y') }}</p>
+                                </li>
+                                <li class="col-sm-4">
+                                    <p><span class="text-soft">Price</span>NGN {{ number_format($loanRepayment->amount, 2) }} </p>
+                                </li>
+                                <li class="col-sm-4">
+                                    <p>
+                                        <span class="text-soft">Status</span> 
+                                        @if ($loanRepayment->status === 'Overdue')
+                                            <span class="badge badge-danger badge-pill" style="display: inline-block;">{{ $loanRepayment->status }}</span>
+                                        @else
+                                            {{ $loanRepayment->status }}
+                                        @endif 
+                                    </p>
+                                </li>
+                            </ul>
+                            @endforeach
+                            @for ($i = 0; $i < $current_loan->loan_duration; $i++)
+                            @endfor
+                        </div>
+                    </div><!-- .card-inner -->
+                    {{-- <div class="card-inner">
+                        <div class="sp-plan-head-group">
+                            <div class="sp-plan-head">
+                                <h6 class="title">Manual Payment</h6>
+                            </div>
+                        </div>
+                        <div class="sp-plan-payopt">
+                            <div class="cc-pay">
+                                <h6 class="title">Enter Amount</h6>
+                                <form method="POST" action="{{ route('user.payment.pay') }}" accept-charset="UTF-8" role="form" autocomplete="off">
+                                    <ul class="cc-pay-method">
+                                        @csrf
+                                        <input type="hidden" name="email" value="{{ $user->email }}"> 
+                                        <input type="hidden" name="amount" id="camount" value="">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <input type="hidden" name="currency" value="NGN">
+                                        <input type="hidden" name="reference" value="{{ Paystack::genTranxRef() }}">    
+                                        <input type="hidden" name="metadata" value="{{ json_encode($array = [
+                                            'loan_id'           => $loan_amount->loan_id, 
+                                            'user_id'           => $loan_amount->user_id, 
+                                            'payment_type'      => 'Custom Payment', 
+                                            'loan_amount_id'    => $loan_amount->id, 
+                                        ]) }}">
+                                        
+                                        <li class="cc-pay-dd dropdown">
+                                            <input class="form-control" id="customAmount" type="text" name="customAmount" autocomplete="off"> 
+                                        </li>
+                                        <li class="cc-pay-btn">
+                                            <button class="btn btn-secondary" type="submit" value="Pay Now"><span>Pay Now</span> <em class="icon ni ni-arrow-long-right"></em></button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </div> --}}
+                </div><!-- .card-inner-group -->
+            </div><!-- .card -->
+        </div><!-- .col -->
+        @if (isset($next_payment))
+            <div class="col-xl-4">
+                <div class="card card-bordered card-full d-none d-xl-block">
+                    {{-- <div class="nk-help-plain card-inner text-center"> --}}
+                        <div class="card-inner-group">
+                            <div class="card-inner">
+                                    <div class="sp-plan-head">
+                                        <h6 class="title">Next Payment</h6>
+                                    </div>
+                                    <div class="sp-plan-desc sp-plan-desc-mb">
+                                        <ul class="row gx-1">
+                                            <li class="col-sm-6">
+                                                @php
+                                                    // dd($next_payment);
+                                                @endphp
+                                                {{-- <form method="POST" action="{{ route('user.payment.pay') }}" accept-charset="UTF-8" role="form">
+                                                    @csrf
+                                                    <input type="hidden" name="email" value="{{ $user->email }}">
+                                                    <input type="hidden" name="amount" id="amount" value="{{ round($next_payment->amount, 2) * 100 }} ">
+                                                    <input type="hidden" name="quantity" value="1">
+                                                    <input type="hidden" name="currency" value="NGN">
+                                                    <input type="hidden" name="reference" value="{{ Paystack::genTranxRef() }}"> 
+                                                    <input type="hidden" name="metadata" value="{{ json_encode($array = [
+                                                        'loan_id'           => $next_payment->loan_id, 
+                                                        'user_id'           => $next_payment->user_id, 
+                                                        'payment_type'      => 'Next Payment', 
+                                                        'loan_amount_id'    => $next_payment->loan_amount_id, 
+                                                        'loan_repayment_id' => $next_payment->id, 
+                                                    ]) }}">
+                                                    
+                                                    <button class="btn btn-secondary" type="submit" value="Pay Now"><span>Pay Now</span> <em class="icon ni ni-arrow-long-right"></em></button>
+                                                </form> --}}
+                                            </li>
+                                            <li class="col-sm-6 sp-plan-amount pt-3">
+                                                <span class="amount">{{ number_format($next_payment->amount, 2) }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                            </div><!-- .card-inner -->
+                            <div class="card-inner">
+                                    <div class="sp-plan-head">
+                                        <h6 class="title">Last Payment</h6>
+                                    </div>
+                                    <div class="sp-plan-desc sp-plan-desc-mb">
+                                        @if(isset($last_payment))
+                                            <ul class="row gx-1">
+                                                <li class="col-sm-6">
+                                                    <span class="ff-italic text-soft">Paid at <br>{{ $last_payment->created_at->format('F d, Y') }}</span>
+                                                </li>
+                                                <li class="col-sm-6 sp-plan-amount">
+                                                    <span class="amount">NGN <br>{{ number_format($last_payment->amount, 2) }}</span>
+                                                </li>
+                                            </ul>
+                                        @else
+                                            <p>No payment made yet.</p>                                                                            
+                                        @endif
+                                    </div>
+                            </div><!-- .card-inner -->
+                        </div><!-- .card-inner-group -->
+                    </div>
+                {{-- </div><!-- .card --> --}} 
+            </div><!-- .col -->
+        @endif
+    </div>
+</div><!-- .nk-block --> 
+@endif
 
 <div class="nk-block">
     <div class="row g-gs">
@@ -335,9 +447,66 @@
     </div><!-- .row -->
 </div>
 
+<div class="nk-block">
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <div class="card-title-group">
+                <div class="card-title">
+                    <h6 class="title">Payment History</h6>
+                </div>
+            </div>
+        </div>
+        <table class="table table-tranx table-billing">
+            <thead>
+                <tr class="tb-tnx-head">
+                    <th class="tb-tnx-id"><span class="">Reference No</span></th>
+                    <th class="tb-tnx-info">
+                        <span class="tb-tnx-desc d-none d-sm-inline-block">
+                            <span>Payment Method</span>
+                        </span>
+                        <span class="tb-tnx-date d-md-inline-block d-none">
+                                <span>Payment Date</span>
+                        </span>
+                    </th>
+                    <th class="tb-tnx-amount">
+                        <span class="tb-tnx-total">Amount Paid</span>
+                        <span class="tb-tnx-status d-none d-md-inline-block">Status</span>
+                    </th>
+                </tr><!-- .tb-tnx-head -->
+            </thead>
+            <tbody>
+                @foreach ($user->userPayments as $payment)
+                    <tr class="tb-tnx-item">
+                        <td class="tb-tnx-id">
+                            <span>{{ $payment->reference }}</span>
+                        </td>
+                        <td class="tb-tnx-info">
+                            <div class="tb-tnx-desc">
+                                <span class="title">{{ $payment->payment_method }}</span>
+                            </div>
+                            <div class="tb-tnx-date">
+                                <span class="date">{{ $payment->paid_at }}</span>
+                            </div>
+                        </td>
+                        <td class="tb-tnx-amount">
+                            <div class="tb-tnx-total">
+                                <span class="amount">NGN {{ $payment->amount }}</span>
+                            </div>
+                            <div class="tb-tnx-status">
+                                <span class="badge badge-dot badge-success">{{ $payment->status }}</span>
+                            </div>
+                        </td>
+                    </tr><!-- .tb-tnx-item -->
+                    
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div><!-- .nk-block -->
 
+
+<!-- @@Modal - Apply Now @s -->
 @if(!$pending_loan)
- <!-- @@Modal - Apply Now @s -->
  <div class="modal fade" tabindex="-1" id="applyNow">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -372,7 +541,27 @@
                                     </select>
                                 </div>
                             </div><!-- .invest-field --> 
-                            <input type="hidden" name="repayment_option" value="monthly">
+
+
+                            <div class="invest-field form-group">
+                                <div class="form-label-group">
+                                    <label class="form-label">Repayment Option</label>
+                                </div>
+                                <div class="form-control-group">
+                                    <div class="form-info"><em class="icon ni ni-arrow-down">&nbsp;&nbsp;</em></div>
+                                    <select class="form-control form-control-amount custom-select {{ $errors->has('repayment_option') ? 'is-invalid' : '' }}" name="repayment_option" id="repayment_option" required>
+                                        <option value disabled {{ old('repayment_option', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                                        @foreach(App\Loan::REPAYMENT_OPTION_SELECT as $key => $label)
+                                            @if ($user->payment_method === 'Paystack' && $key == 'Interest payable monthly and Principal at maturity')
+                                                <option disabled value="{{ $key }}" {{ old('repayment_option', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                                                @break
+                                            @endif
+                                            <option value="{{ $key }}" {{ old('repayment_option', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div><!-- .invest-field --> 
+
                             <div class="invest-field form-group">
                                 <div class="form-label-group">
                                     <label class="form-label">Loan Duration</label>
@@ -394,7 +583,7 @@
                                     <input type="text" class="form-control form-control-amount form-control-lg" name="loan_amount" value="{{ old('loan_amount','') }}" id="loan_amount" required readonly>
                                     <div class="form-range-slider" id="loanAmount_step"></div>
                                 </div>
-                                <div class="form-note pt-2">Note: Minimum loan 100,000 NGN and upto 2,000,000 NGN</div>
+                                <div class="form-note pt-2">Note: Minimum loan 100,000 NGN and upto 5,000,000 NGN</div>
                             </div><!-- .invest-field -->  
 
                             <div class="invest-field form-group">
@@ -437,8 +626,8 @@
 @endif
 
 
+<!-- @@Modal - Edit Loan @s -->
 @if($pending_loan)
-    <!-- @@Modal - Edit Loan @s -->
     <div class="modal fade" tabindex="-1" id="editLoan">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -537,7 +726,7 @@
                     <div class="form">
                         <ul class="d-flex justify-content-around flex-wrap g-3">
                             <li>
-                                <form action="{{ route("user.loan.update", [$approved_loan->id]) }}" method="POST">
+                                <form action="{{ route("user.loan.update", [$approved_loan->id]) }}" method="POST" id="formAprove">
                                     @csrf
                                     <input type="hidden" name="id"              value="{{ $approved_loan->id }}">
                                     <input type="hidden" name="total"           value="{{ $approved_loan->total }}">
@@ -545,7 +734,7 @@
                                     <input type="hidden" name="interest"        value="{{ $approved_loan->interest }}">
                                     <input type="hidden" name="loan_amount"     value="{{ $approved_loan->loan_amount }}">
                                     <input type="hidden" name="loan_duration"   value="{{ $approved_loan->loan_duration }}">
-                                    <button href="submit" class="btn btn-success">Accept Loan</button>
+                                    <button type="submit" class="btn btn-success" >Accept Loan</button>
                                 </form>
                             </li>
                             <li>
@@ -593,32 +782,6 @@
     </div><!-- .modal -->
 @endif
 
-<!-- @@Modal - Subscription Cancle Confirmed @s -->
-<div class="modal fade" tabindex="-1" id="subscription-cancel-confirmed">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body modal-body-md text-center">
-                <div class="nk-modal">
-                    <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-check bg-success-dim text-success"></em>
-                    <h4 class="nk-modal-title">Successfully Cancelled</h4>
-                    <div class="nk-modal-text">
-                        <p>It will effect at the end of your current billing cycle on <strong>01 Feb 2020</strong>. We sent you a confirmation email <strong>(this may take up to 3 hours to receive)</strong>.</p>
-                        <p class="sub-text-sm"><a href="#">Click here</a> to learn more about subscription plan.</p>
-                    </div>
-                    <div class="nk-modal-action-lg">
-                        <a href="#" class="btn btn-mw btn-light" data-dismiss="modal">Return</a>
-                    </div>
-                </div>
-            </div><!-- .modal-body -->
-            <div class="modal-footer bg-lighter">
-                <div class="text-center w-100">
-                    <p>You can easily re-subscription your favourite plan any time.</p>
-                </div>
-            </div>
-        </div><!-- .modal-content -->
-    </div><!-- .modla-dialog -->
-</div><!-- .modal -->
-
 @endsection
 @section('scripts')
     <script>
@@ -636,7 +799,7 @@
             connect: 'lower',
             range: {
                 'min': [100000],
-                'max': [2000000]
+                'max': [5000000]
             }
         });  
         noUiSlider.create(duratiStep, {
@@ -687,5 +850,13 @@
             document.getElementById("interest").value = charges.toFixed(2);
             document.getElementById("total").value = total.toFixed(2);
         }    
+    </script>
+    <script>
+
+        var a = document.getElementById('customAmount')
+        a.addEventListener('keyup', function() {
+        var b = a.value*100;
+            document.getElementById('camount').value = b;
+        }); 
     </script>
 @endsection

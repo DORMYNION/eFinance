@@ -97,6 +97,9 @@ class UpdateUserProfileRequest extends FormRequest
                 'required',
                 'unique:users,account_no,' . auth()->id(),
             ],
+            'payment_method'                     => [
+                'required',
+            ],
         ];
     }
 }

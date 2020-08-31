@@ -19,32 +19,26 @@
             <table class=" table table-bordered table-striped table-hover datatable datatable-Payment">
                 <thead>
                     <tr>
-                        <th width="10">
-
+                        <th>
+                            Fullname 
                         </th>
                         <th>
-                            {{ trans('cruds.payment.fields.id') }}
+                            Payment Method
                         </th>
                         <th>
-                            {{ trans('cruds.payment.fields.loan') }}
+                            Reference No
                         </th>
                         <th>
-                            {{ trans('cruds.payment.fields.loan_amount') }}
+                            Amount Paid
                         </th>
                         <th>
-                            {{ trans('cruds.payment.fields.payment_method') }}
+                            Payment Type
                         </th>
                         <th>
-                            {{ trans('cruds.payment.fields.amount') }}
+                            Payment Date
                         </th>
                         <th>
-                            {{ trans('cruds.payment.fields.paid_at') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.payment.fields.transaction') }}
-                        </th>
-                        <th>
-                            &nbsp;
+                            Status
                         </th>
                     </tr>
                 </thead>
@@ -52,52 +46,26 @@
                     @foreach($payments as $key => $payment)
                         <tr data-entry-id="{{ $payment->id }}">
                             <td>
-
+                                {{ $payment->user->name }}
                             </td>
                             <td>
-                                {{ $payment->id ?? '' }}
+                                {{ App\Payment::PAYMENT_METHOD_SELECT[$payment->payment_method] }}
                             </td>
                             <td>
-                                {{ $payment->loan->viewed ?? '' }}
+                                {{ $payment->reference }}
                             </td>
                             <td>
-                                {{ $payment->loan_amount->total ?? '' }}
+                                {{ $payment->amount }}
                             </td>
                             <td>
-                                {{ App\Payment::PAYMENT_METHOD_SELECT[$payment->payment_method] ?? '' }}
+                                {{ $payment->payment_type ?? '' }}
                             </td>
                             <td>
-                                {{ $payment->amount ?? '' }}
+                                {{ $payment->created_at->format('F d, Y') }}
                             </td>
                             <td>
-                                {{ $payment->paid_at ?? '' }}
+                                {{ $payment->status }}
                             </td>
-                            <td>
-                                {{ $payment->transaction ?? '' }}
-                            </td>
-                            <td>
-                                @can('payment_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.payments.show', $payment->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
-
-                                @can('payment_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.payments.edit', $payment->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
-                                @can('payment_delete')
-                                    <form action="{{ route('admin.payments.destroy', $payment->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
-                            </td>
-
                         </tr>
                     @endforeach
                 </tbody>

@@ -3,31 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyPaymentRequest;
 use App\Http\Requests\StorePaymentRequest;
-use App\Http\Requests\UpdatePaymentRequest;
 use App\Loan;
 use App\LoanAmount;
+use App\LoanRepayment;
 use App\Payment;
-use Gate;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'can:staff']);
+    }
+    
     public function index()
     {
-        abort_if(Gate::denies('payment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $payments = Payment::orderBy('id', 'DESC')->get();
 
-        $payments = Payment::all();
+        $payments->load('user', 'loan');
 
         return view('admin.payments.index', compact('payments'));
     }
 
     public function create()
     {
-        abort_if(Gate::denies('payment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $loans = Loan::all()->pluck('viewed', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $loan_amounts = LoanAmount::all()->pluck('total', 'id')->prepend(trans('global.pleaseSelect'), '');
@@ -37,53 +37,97 @@ class PaymentController extends Controller
 
     public function store(StorePaymentRequest $request)
     {
-        $payment = Payment::create($request->all());
+        $getLoan            = (isset($request->loan_id))            ? Loan::where('id', $request->loan_id)->first()                      : false;
+        $getLoanAmount      = (isset($request->loan_amount_id))     ? LoanAmount::where('id', $request->loan_amount_id)->first()         : false;
+        $getLoanRepayment   = (isset($request->loan_repayment_id))  ? LoanRepayment::where('id', $request->loan_repayment_id)->first()   : false;
+        
+        $paidAmount = $request->amount;
 
-        return redirect()->route('admin.payments.index');
-    }
+        $tPaid = $getLoanAmount->paid + $paidAmount;
+        $bLeft = $getLoanAmount->balance - $paidAmount;
+        
+        if (round($paidAmount) >= round($getLoanAmount->balance) && $paymentMetaData['payment_type'] = 'Full Payment') {
 
-    public function edit(Payment $payment)
-    {
-        abort_if(Gate::denies('payment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            $loan = Loan::where('id', $request->loan_id)->update(['status' => 'Fully Paid']);
 
-        $loans = Loan::all()->pluck('viewed', 'id')->prepend(trans('global.pleaseSelect'), '');
+            $loanAmount = LoanAmount::where('id', $request->loan_amount_id)->update([
+                'balance'             => number_format((float)$bLeft, 2, '.', ''),
+                'paid'                => number_format((float)$paidAmount, 2, '.', ''),
+                'status'              => 'Fully Paid',
+            ]);
 
-        $loan_amounts = LoanAmount::all()->pluck('total', 'id')->prepend(trans('global.pleaseSelect'), '');
+            $loanRepayment = LoanRepayment::where([
+                ['loan_id',         $request->loan_id],
+                ['user_id',         $request->user_id],
+                ['loan_amount_id',  $request->loan_amount_id],
+            ])->update(["status" => 'Paid']);
+            
+            $payment = Payment::create([
+                'amount'            => number_format((float)$paidAmount, 2, '.', ''),
+                'status'            => 'Success',
+                'loan_id'           => $request->loan_id,
+                'user_id'           => $request->user_id,
+                'paid_at'           => date('Y-m-d'),
+                'reference'         => $request->reference,
+                'payment_type'      => 'Full Payment',
+                'payment_method'    => $request->payment_method,
+                'loan_amount_id'    => $request->loan_amount_id,
+            ]);
 
-        $payment->load('loan', 'loan_amount');
+            if($loan && $loanAmount && $loanRepayment && $payment) {
+                return redirect()->route('admin.payments.index')->with('message',  __('global.payment_success'));
+            }
+        } elseif (round($paidAmount) <= round($getLoanAmount->balance) && $paymentMetaData['payment_type'] = 'Custom Payment') {
+            if ($tPaid < round($getLoanAmount->total, 2) && $bLeft != 0) {
+                $loan = Loan::where('id', $request->loan_id)->update(['status' => 'Partially Paid']);
+                $loanAmount = LoanAmount::where('id', $request->loan_amount_id)->update([
+                    'balance'             => number_format((float)$bLeft, 2, '.', ''),
+                    'paid'                => number_format((float)$tPaid, 2, '.', ''),
+                    'status'              => 'Partially Paid',
+                ]);
+            } else {
+                $loan = Loan::where('id', $request->loan_id)->update(['status' => 'Fully Paid']);
+                $loanAmount = LoanAmount::where('id', $request->loan_amount_id)->update([
+                    'balance'             => number_format((float)$bLeft, 2, '.', ''),
+                    'paid'                => number_format((float)$tPaid, 2, '.', ''),
+                    'status'              => 'Fully Paid',
+                ]);
+            }
 
-        return view('admin.payments.edit', compact('loans', 'loan_amounts', 'payment'));
-    }
+            $getLoanRepayments = LoanRepayment::where([
+                ['loan_id',         $request->loan_id],
+                ['user_id',         $request->user_id],
+                ['loan_amount_id',  $request->loan_amount_id],
+            ])->get();
 
-    public function update(UpdatePaymentRequest $request, Payment $payment)
-    {
-        $payment->update($request->all());
+            $key = 0 ;
+            
+            for ($i=1; $i <= $getLoanRepayments->count() ; $i++) { 
+                if($tPaid >= $getLoanRepayments[$key]->amount) {
+                    $tPaid = $tPaid - $getLoanRepayments[$key]->amount;
 
-        return redirect()->route('admin.payments.index');
-    }
+                    $loanRepayment = LoanRepayment::where('id', $getLoanRepayments[$key]->id)->update(["status" => 'Paid']);
+                }
+                $key++;
+            }
+            
+            $payment = Payment::create([
+                'amount'            => number_format((float)$paidAmount, 2, '.', ''),
+                'status'            => 'Success',
+                'loan_id'           => $request->loan_id,
+                'user_id'           => $request->user_id,
+                'paid_at'           => date('Y-m-d'),
+                'reference'         => $request->reference,
+                'payment_type'      => 'Custom Payment',
+                'payment_method'    => $request->payment_method,
+                'loan_amount_id'    => $request->loan_amount_id,
+            ]);
 
-    public function show(Payment $payment)
-    {
-        abort_if(Gate::denies('payment_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            if($loan && $loanAmount  && $payment) {
+                return redirect()->route('admin.payments.index')->with('message',  __('global.payment_success'));
+            }
+        }
 
-        $payment->load('loan', 'loan_amount');
-
-        return view('admin.payments.show', compact('payment'));
-    }
-
-    public function destroy(Payment $payment)
-    {
-        abort_if(Gate::denies('payment_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $payment->delete();
-
-        return back();
-    }
-
-    public function massDestroy(MassDestroyPaymentRequest $request)
-    {
-        Payment::whereIn('id', request('ids'))->delete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
+        return redirect()->route('admin.payments.index')->with('message',  __('global.payment_success'));
     }
 }

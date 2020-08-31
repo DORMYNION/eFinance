@@ -11,7 +11,7 @@ class StoreUserRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('Admin'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }
@@ -19,22 +19,25 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'     => [
+            'first_name'     => [
+                'required',
+            ],
+            'last_name'     => [
                 'required',
             ],
             'email'    => [
                 'required',
+                'email',
                 'unique:users',
             ],
             'password' => [
                 'required',
             ],
-            'roles.*'  => [
+            'role.*'  => [
                 'integer',
             ],
-            'roles'    => [
+            'role'    => [
                 'required',
-                'array',
             ],
         ];
     }

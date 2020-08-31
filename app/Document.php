@@ -40,7 +40,7 @@ class Document extends Model implements HasMedia
     ];
 
     const DOCUMENT_TYPE_SELECT = [
-        'Employment Letter/Promotion Letter,'       => 'Employment Letter/Promotion Letter,',
+        'Employment Letter/Promotion Letter'       => 'Employment Letter/Promotion Letter',
         'Payslips/Bank Statement'                   => 'Payslips/Bank Statement (Last 6 Months)',
         'Government Issused ID'                    => 'Government Issused ID',
     ];

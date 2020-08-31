@@ -11,7 +11,10 @@ class Payment extends Model {
     public $table = 'payments';
 
     const PAYMENT_METHOD_SELECT = [
-        'Paystack' => 'Paystack',
+        'Paystack'      => 'Paystack',
+        'Cheque'        => 'Cheque',
+        'Remita'        => 'Remita',
+        'Bank Transfer' => 'Bank Transfer',
     ];
 
     protected $dates = [

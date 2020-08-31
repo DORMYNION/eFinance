@@ -33,9 +33,13 @@ class CreateUsersTable extends Migration
             $table->string('employers_local_government_area');
             $table->string('employers_state');
             $table->decimal('monthly_income', 15, 2);
+            $table->string('plan_code')->nullable();
+            $table->string('customer_code')->nullable();
+            $table->string('authorization_code')->nullable();
             $table->string('bank_name');
             $table->string('account_no')->unique();
             $table->string('account_name');
+            $table->string('payment_method')->nullable();
             $table->string('password')->nullable();
             $table->string('remember_token')->nullable();
             $table->string('verification_token')->nullable();

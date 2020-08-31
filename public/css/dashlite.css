@@ -7762,7 +7762,7 @@ ol.linenums li { padding-left: 12px; color: #bebec5; line-height: 18px; text-sha
 
 .dropzone .dz-preview.dz-image-preview .dz-details { -webkit-transition: opacity 0.2s linear; -moz-transition: opacity 0.2s linear; -ms-transition: opacity 0.2s linear; -o-transition: opacity 0.2s linear; transition: opacity 0.2s linear; }
 
-.dropzone .dz-preview .dz-remove { font-size: 14px; text-align: center; display: block; cursor: pointer; border: none; }
+.dropzone .dz-preview .dz-remove { font-size: 14px; text-align: center; display: none; cursor: pointer; border: none; }
 
 .dropzone .dz-preview .dz-remove:hover { text-decoration: underline; }
 

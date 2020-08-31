@@ -18,6 +18,7 @@ class CreateLoanAmountsTable extends Migration
             $table->decimal('total', 15, 2);
             $table->decimal('paid', 15, 2)->nullable();
             $table->decimal('balance', 15, 2)->nullable();
+            $table->string('repayment_option');
             $table->string('status');
             $table->dateTime('disbursed_date');
             $table->dateTIme('due_date')->nullable();

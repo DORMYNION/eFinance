@@ -2,36 +2,27 @@
 
 namespace App\Http\Controllers\User;
 
-use Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Http\Requests\UpdateUserAddPaymentMethodRequest;
 use App\Http\Requests\UpdateUserEmailRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
 use App\Http\Requests\UpdateUserProfileRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller {
 
     use MediaUploadingTrait;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('auth');
-
+        $this->middleware(['auth', 'can:user']);
     }
 
     public function index() {
-
-        abort_if(Gate::denies('user'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $user = Auth::user();
 
@@ -40,8 +31,6 @@ class ProfileController extends Controller {
 
     public function update(UpdateUserProfileRequest $request) {
 
-        // dd($request);
-        
         auth()->user()->update($request->validated());
 
         return redirect()->route('user.profile')->with('message', __('global.update_profile_success'));
@@ -78,10 +67,15 @@ class ProfileController extends Controller {
         return redirect()->route('user.profile')->with('message', __('global.change_email_success'));
     }
 
+    public function addPaymentMethod(UpdateUserAddPaymentMethodRequest $request) {
+
+        auth()->user()->update($request->validated());
+
+        return redirect()->route('user.profile')->with('message', __('global.add_payment_method_success'));
+    }
+
     public function storeCKEditorImages(Request $request)
     {
-        abort_if(Gate::denies('user'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $model         = new User();
         $model->id     = $request->input('crud_id', 0);
         $model->exists = true;

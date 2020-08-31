@@ -296,9 +296,9 @@
         <div class="nk-block">
             <div class="nk-block-head">
                 <div class="nk-block-head-content">
-                    <h5 class="nk-block-title title">Security Settings</h5>
+                    <h5 class="nk-block-title title">Picture & Password </h5>
                     <div class="nk-block-des">
-                        <p>Change your profile picture, email and password here.</p>
+                        <p>Change your profile picture and password here.</p>
                     </div>
                 </div>
             </div><!-- .nk-block-head -->
@@ -745,7 +745,7 @@
 <script>
     Dropzone.options.profileImageDropzone = {
     url: '<?php echo e(route('user.profile.storeMedia')); ?>',
-    maxFilesize: 1, // MB
+    maxFilesize: 30, // MB
     acceptedFiles: '.jpeg,.jpg,.png,.gif',
     maxFiles: 1,
     addRemoveLinks: true,
@@ -753,9 +753,9 @@
       'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
     },
     params: {
-      size: 1,
-      width: 400,
-      height: 400
+      size: 3,
+      width: 4000,
+      height: 4000
     },
     success: function (file, response) {
       $('form').find('input[name="profile_image"]').remove()

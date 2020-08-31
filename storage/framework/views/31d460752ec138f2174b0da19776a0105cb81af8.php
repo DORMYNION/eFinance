@@ -9,8 +9,8 @@
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
-                    <div class="text-value-lg"><h1><?php echo e(number_format($settings1['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold h4"><?php echo e($settings1['chart_title']); ?></small>
+                    <div class="text-value-lg"><h1><?php echo e(number_format($settings1['total_number'] - $isAdmin )); ?></h1></div>
+                    <small class="text-muted text-uppercase font-weight-bold h5"><?php echo e($settings1['chart_title']); ?></small>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1><?php echo e(number_format($settings2['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold h4"><?php echo e($settings2['chart_title']); ?></small>
+                    <small class="text-muted text-uppercase font-weight-bold h5"><?php echo e($settings2['chart_title']); ?></small>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1><?php echo e(number_format($settings3['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold h4">Total Loans Out</small>
+                    <small class="text-muted text-uppercase font-weight-bold h5">Total Loans Out</small>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1><?php echo e(number_format($settings4['total_number'])); ?></h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold h4">Total Paybacks In</small>
+                    <small class="text-muted text-uppercase font-weight-bold h5">Total Paybacks In</small>
                 </div>
             </div>
         </div>
@@ -75,7 +75,13 @@
                                 ?>
                                 <tr  data-entry-id="<?php echo e($loan->id); ?>">
                                     <td class="text-center">
-                                        <div class="c-avatar"><img src="<?php echo e(asset('img/profile/default.png')); ?>" alt="" class="c-avatar-img"></div>
+                                        <div class="c-avatar">
+                                            <?php if($loan->user->profile_image): ?>
+                                                <img class="c-avatar-img no-border" src="<?php echo e($loan->user->profile_image->getUrl()); ?>"  alt="">
+                                            <?php else: ?>
+                                                <img class="c-avatar-img no-border" src="<?php echo e(asset('img/profile/default.jpeg')); ?>" alt="">
+                                            <?php endif; ?>    
+                                        </div>
                                     </td>
                                     <td><?php echo e($date_join); ?></td>
                                     <td>

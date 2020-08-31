@@ -36,7 +36,7 @@
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a href="<?php echo e(route("admin.users.index")); ?>" class="c-sidebar-nav-link <?php echo e(request()->is('admin/customers') || request()->is('admin/customers/*') ? 'active' : ''); ?>">
+            <a href="<?php echo e(route("admin.users.index")); ?>" class="c-sidebar-nav-link <?php echo e(request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : ''); ?>">
                 <i class="fa-fw fas fa-user-plus c-sidebar-nav-icon">
 
                 </i>

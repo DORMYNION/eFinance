@@ -26,20 +26,19 @@ class LoansTableSeeder extends Seeder
         //     'viewed'                    => 0,
         //     'status'                    => 'Due',
         // ]);
-        // Loan::create([
-        //     'user_id'                   => 2,
-        //     'loan_exist'                => 'No',
-        //     'loan_exist_type'           => null,
-        //     'loan_exist_amount'         => null,
-        //     'purpose_of_loan'           => 'Portable Goods',
-        //     'repayment_option'          => 'Monthly',
-        //     'loan_amount'               => 100000.00,
-        //     'loan_duration'             => 1,
-        //     'interest'                  => 6000.00,
-        //     'total'                     => 106000.00,
-        //     'viewed'                    => 0,
-        //     'status'                    => 'Pending',
-        // ]);
+        Loan::create([
+            'user_id'                   => 2,
+            'loan_exist'                => 'No',
+            'loan_exist_type'           => null,
+            'loan_exist_amount'         => null,
+            'purpose_of_loan'           => 'Portable Goods',
+            'repayment_option'          => 'Monthly',
+            'loan_amount'               => 100000.00,
+            'loan_duration'             => 1,
+            'interest'                  => 6000.00,
+            'total'                     => 106000.00,
+            'status'                    => 'Pending',
+        ]);
         // Loan::create([
         //     'user_id'                   => 2,
         //     'loan_exist'                => 'No',

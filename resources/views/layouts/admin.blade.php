@@ -21,6 +21,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
+    
+    <!-- Fav Icon  -->
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
 
     <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -33,7 +36,7 @@
     </style>
 </head>
 
-<body class="c-app" style="'Muli', sans-serif !important;">
+<body class="c-app">
 
     @include('partials.menu')
     <div class="c-wrapper">
@@ -48,67 +51,13 @@
                 <i class="fas fa-fw fa-bars"></i>
             </button>
 
-            <ul class="row c-sidebar-nav pt-4">
+            <ul class="row c-sidebar-nav pt-3" style="margin-top: -1px">
                 <li class="col-md-3">
                     <select class="searchable-field form-control">
         
                     </select>
                 </li>
             </ul>
-
-            <ul class="c-header-nav ml-auto">
-                @if(count(config('panel.available_languages', [])) > 1)
-                    <li class="c-header-nav-item dropdown d-md-down-none">
-                        <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            {{ strtoupper(app()->getLocale()) }}
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            @foreach(config('panel.available_languages') as $langLocale => $langName)
-                                <a class="dropdown-item" href="{{ url()->current() }}?change_language={{ $langLocale }}">{{ strtoupper($langLocale) }} ({{ $langName }})</a>
-                            @endforeach
-                        </div>
-                    </li>
-                @endif
-
-                <ul class="c-header-nav ml-auto">
-                    <li class="c-header-nav-item dropdown notifications-menu">
-                        <a href="#" class="c-header-nav-link" data-toggle="dropdown">
-                            <i class="far fa-bell"></i>
-                            @php($alertsCount = \Auth::user()->userUserAlerts()->where('read', false)->count())
-                                @if($alertsCount > 0)
-                                    <span class="badge badge-warning navbar-badge">
-                                        {{ $alertsCount }}
-                                    </span>
-                                @endif
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            @if(count($alerts = \Auth::user()->userUserAlerts()->withPivot('read')->limit(10)->orderBy('created_at', 'ASC')->get()->reverse()) > 0)
-                                @foreach($alerts as $alert)
-                                    <div class="dropdown-item">
-                                        <a href="{{ $alert->alert_link ? $alert->alert_link : "#" }}" target="_blank" rel="noopener noreferrer">
-                                            @if($alert->pivot->read === 0) <strong> @endif
-                                                {{ $alert->alert_text }}
-                                                @if($alert->pivot->read === 0) </strong> @endif
-                                        </a>
-                                    </div>
-                                @endforeach
-                            @else
-                                <div class="text-center">
-                                    {{ trans('global.no_alerts') }}
-                                </div>
-                            @endif
-                        </div>
-                    </li>
-                </ul>
-
-            </ul>
-
-            <div class="c-subheader justify-content-between px-3 d-none">
-                <ol class="breadcrumb border-0 m-0 px-0 px-md-3 my-auto">
-                    <li class="breadcrumb-item active h4"><a href="{{ route("admin.home") }}" class="text-dark">Dashboard</a></li>
-                    <li class="breadcrumb-item active h4">@yield('breadcrumb')</li>
-                </ol>
-            </div>
         </header>
 
         <div class="c-body">

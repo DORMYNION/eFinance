@@ -20,7 +20,7 @@ class CreateLoanRepaymentsTable extends Migration
             $table->unsignedBigInteger('loan_amount_id');
             $table->string('tenor');
             $table->decimal('amount', 15, 2);
-            $table->dateTIme('due_date');
+            $table->dateTime('due_date');
             $table->string('status');
             $table->timestamps();
             $table->foreign('loan_id')->references('id')->on('loans');

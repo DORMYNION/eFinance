@@ -11,10 +11,11 @@ class CreateLoansTable extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->boolean('viewed')->default(0)->nullable();
+            $table->unsignedBigInteger('approved_by_id')->nullable();
+            $table->unsignedBigInteger('disbursed_by_id')->nullable();
             $table->decimal('loan_amount', 15, 2);
             $table->string('status')->default('Pending')->nullable();
-            $table->string('customer_type')->default('New')->nullable();
+            $table->string('decline_reason')->nullable();
             $table->string('loan_exist')->default('No')->nullable();
             $table->string('loan_exist_type')->nullable();
             $table->decimal('loan_exist_amount', 15, 2)->nullable();
@@ -23,8 +24,12 @@ class CreateLoansTable extends Migration
             $table->integer('loan_duration');
             $table->decimal('interest', 15, 2);
             $table->decimal('total', 15, 2);
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->dateTime('approved_at')->nullable();            
+            $table->dateTime('disbursed_at')->nullable();            
             $table->timestamps(); 
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('approved_by_id')->references('id')->on('users');
+            $table->foreign('disbursed_by_id')->references('id')->on('users');
         });
     }
 }

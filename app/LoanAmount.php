@@ -2,13 +2,11 @@
 
 namespace App;
 
-use App\Traits\Auditable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use \DateTimeInterface;
 
 class LoanAmount extends Model {
-    use Auditable;
 
     public $table = 'loan_amounts';
 
@@ -34,6 +32,7 @@ class LoanAmount extends Model {
         'loan_tenor',
         'loan_amount',
         'disbursed_date',
+        'repayment_option',
     ];
 
     protected function serializeDate(DateTimeInterface $date) {

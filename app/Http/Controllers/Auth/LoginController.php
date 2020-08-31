@@ -42,9 +42,11 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        // dd(Auth::user()->hasRole('User'));
         if(Auth::user()->hasRole('Admin')) {
             $this->redirectTo = RouteServiceProvider::ADMIN;
+            return $this->redirectTo;
+        } elseif(Auth::user()->hasRole('Staff'))  {
+            $this->redirectTo = RouteServiceProvider::STAFF;
             return $this->redirectTo;
         } else {
             $this->redirectTo = RouteServiceProvider::USER;

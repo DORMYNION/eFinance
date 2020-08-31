@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="./images/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
 
     <!-- Page Title  -->
     <title>E-Finance</title>
@@ -23,6 +23,7 @@
 </head>
 
 <body class="nk-body npc-subscription has-aside ui-clean ">
+
     <div class="nk-app-root">
         <!-- main @s -->
         <div class="nk-main ">
@@ -86,7 +87,7 @@
                                             </div>
                                         </div>
                                     </li><!-- .dropdown -->
-                                    <li class="dropdown notification-dropdown">
+                                    {{-- <li class="dropdown notification-dropdown">
                                         <a href="#" class="dropdown-toggle nk-quick-nav-icon mr-lg-n1" data-toggle="dropdown">
                                             <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em></div>
                                         </a>
@@ -98,7 +99,7 @@
                                             <div class="dropdown-body">
                                                 <div class="nk-notification">
                                                     @foreach ($user->notifications as $notification)
-                                                        
+                                                         --}}
                                                         {{-- <div class="nk-notification-item dropdown-inner">
                                                             <div class="nk-notification-icon">
                                                                 <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
@@ -111,14 +112,14 @@
                                                                 <div class="nk-notification-time">{{ $notification->created_at->diffForHumans() }}</div>
                                                             </div>
                                                         </div> --}}
-                                                    @endforeach
+                                                    {{-- @endforeach
                                                 </div><!-- .nk-notification -->
                                             </div><!-- .nk-dropdown-body -->
                                             <div class="dropdown-foot center">
                                                 <a href="#">View All</a>
                                             </div>
                                         </div>
-                                    </li><!-- .dropdown -->
+                                    </li><!-- .dropdown --> --}}
                                     <li class="d-lg-none">
                                         <a href="#" class="toggle nk-quick-nav-icon mr-n1" data-target="sideNav"><em class="icon ni ni-menu"></em></a>
                                     </li>
@@ -141,25 +142,32 @@
 
                                     @if(session('document_type'))
                                     {{-- @php dd(session()->get('document_type')); @endphp --}}
-                                        <div class="row mb-2">
+                                        <div class="row mb-5">
                                             <div class="col-lg-12">
                                                 <div class="alert alert-pro alert-warning" role="alert">
                                                     <div class="alert-text">
                                                         <h6>Upload Documents</h6>
-                                                        <p>Kindly upload the following documents <b>{{ session()->get('document_type') }}</b> to verify your account and for loan approval.</p>
+                                                        <p>To approve your loan, kindly upload the following documents: <br> 
+                                                            <b>{{ session()->get('document_type') }}</b>.</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     @endif
-                                    @if(session('profile_image'))
-                                        <div class="row mb-2">
+                                    @if(session('customer_code'))
+                                        <div class="row mb-5">
                                             <div class="col-lg-12">
                                                 <div class="alert alert-pro alert-warning" role="alert">
-                                                    <div class="alert-text">
-                                                        <h6>Upload Profile Picture</h6>
-                                                        <p><b>{{ session()->get('profile_image') }}</b></p>
-                                                    </div>
+                                                        <div class="alert-text">
+                                                            <h6>Add Payment Method</h6>
+                                                            <p><b>{{ session()->get('customer_code') }}</b></p>
+                                                        </div>
+                                                        <div class="alert-actions pt-3">
+                                                            {{-- @if ($user->customer_code === null) --}}
+                        
+                                                                <a href="#" class="btn btn-success" data-toggle="modal" data-target="#addPaymentMethod"><span>Add Payment Method</span></a>
+                                                            {{-- @endif --}}
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,7 +178,7 @@
                                             <div class="col-lg-12">
                                                 <div class="alert alert-pro alert-success" role="alert">
                                                     <div class="alert-text">
-                                                        <h6>Successfully</h6>
+                                                        <h6>Successful</h6>
                                                         <p>{{ session('message') }}</p>
                                                     </div>
                                                 </div>
@@ -228,10 +236,115 @@
             {{ csrf_field() }}
         </form>
     </div>
+
+
+    <!-- @@Modal - Subscription Change @s -->
+    <div class="modal fade" tabindex="-1" id="addPaymentMethod">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                <div class="modal-body modal-body-md">
+                    <div class="sp-package text-center">
+                        <div class="sp-package-head">
+                            <h4 class="title">Add Payment Method</h4>
+                            <p class="text-soft">Kindly add your payment method to verify your account and to approve your loan.</p>
+                        </div> 
+                        <ul class="sp-package-plan nav nav-tabs"> 
+                        </ul>
+                        <form method="POST" action="{{ route('user.profile.addPaymentMethod') }}" id="addPaymentMethodForm" accept-charset="UTF-8" role="form" autocomplete="off">
+                            @csrf
+                            <ul class="sp-package-list">
+                                <li class="sp-package-item">
+                                    <input class="sp-package-choose" type="radio" name="payment_method" id="Paystack" value="Paystack" checked>
+                                    <label class="sp-package-desc" for="Paystack">
+                                        <span class="sp-package-info py-1">
+                                            <span class="sp-package-title title">Paystack</span>
+                                            <span class="sp-package-detail">Automatic monthly payments</span>
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="sp-package-item">
+                                    <input class="sp-package-choose" type="radio" name="payment_method" id="Remita" value="Remita">
+                                    <label class="sp-package-desc" for="Remita">
+                                        <span class="sp-package-info py-1">
+                                            <span class="sp-package-title title">Remita</span>
+                                            <span class="sp-package-detail">Direct debit mandate</span>
+                                        </span> 
+                                    </label>
+                                </li>
+                                <li class="sp-package-item">
+                                    <input class="sp-package-choose" type="radio" name="payment_method" id="Cheque" value="Cheque">
+                                    <label class="sp-package-desc" for="Cheque">
+                                        <span class="sp-package-info py-1">
+                                            <span class="sp-package-title title">Cheque</span>
+                                            <span class="sp-package-detail">Signed postdated cheques</span>
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                            <div class="sp-package-action">
+                                <button class="btn btn-success" id="submitPaymentMethod">Add Payment Method</button>
+                                <button class="btn btn-dim btn-danger" data-dismiss="modal" >Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- .modal-content -->
+        </div><!-- .modal-dialog -->
+    </div><!-- .modal -->
+
+    <!-- @@Modal - Card Verify Modal @s -->
+    <div class="modal fade" tabindex="-1" id="verifyCard">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                    <div class="modal-body modal-body-md text-center">
+                    <div class="nk-modal">
+                        <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cc-secure bg-success-dim text-success"></em>
+                        <h4 class="nk-modal-title">Insert Payment Card</h4>
+                        <div class="nk-modal-text">
+                            <p>Kindly add your debit card for account verification. This verification will cost NGN50. <br> We will send you a confirmation email <strong>(this may take up to 3 hours to receive)</strong>.</p>
+                            <p class="sub-text-sm"><a href="https://efinanceng.com/privacy.php">Click here</a> to learn more about privacy policy.</p>
+                        </div>
+                        <div class="nk-modal-action-lg">
+                            <form method="POST" action="{{ route('user.payment.pay') }}" accept-charset="UTF-8" role="form" autocomplete="off">
+                                @csrf
+                                <input type="hidden" name="email" value="{{ $user->email }}"> 
+                                <input type="hidden" name="amount" value="5000">
+                                <input type="hidden" name="quantity" value="1">
+                                <input type="hidden" name="currency" value="NGN">
+                                <input type="hidden" name="reference" value="{{ Paystack::genTranxRef() }}">    
+                                <input type="hidden" name="metadata" value="{{ json_encode($array = []) }}">
+                                <button class="btn btn-mw btn-success" type="submit" ><span>Add Card Now</span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+        </div><!-- .modla-dialog -->
+    </div><!-- .modal -->
+
+
     <!-- app-root @e -->
     <!-- JavaScript -->
     <script src="{{ asset('js/bundle.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
+
+    <script>
+        $(function(e){
+            $('#addPaymentMethodForm').submit(function(e) {
+                if($("input[name='payment_method']:checked").val() === "Paystack") {
+                    console.log('jsjdks');
+                    $('#addPaymentMethod').modal('hide');
+                    $('#verifyCard').modal('show');
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+        });$('addPaymentMethodForm')
+    </script>
+
     @yield('scripts')
 </body>
 

@@ -1,10 +1,9 @@
 <?php $__env->startSection('content'); ?>
 
-
 <div class="card login-card">
     <div class="row no-gutters">
         <div class="col-md-5">
-            <img src="<?php echo e(asset('img/login.jpg')); ?>" alt="login" class="login-card-img">
+            <img src="<?php echo e(asset('img/login.jpeg')); ?>" alt="login" class="login-card-img">
         </div>
         <div class="col-md-7">
             <div class="card-body">
@@ -58,7 +57,6 @@
 
                     </button>
                     
-                    
                 </form>
                 <?php if(Route::has('password.request')): ?>
                     <a class="forgot-password-link" href="<?php echo e(route('password.request')); ?>">
@@ -66,13 +64,10 @@
 
                     </a><br>
                 <?php endif; ?>
-                <p class="login-card-footer-text">Don't have an account? 
-                    <a class="text-reset" href="<?php echo e(route('register')); ?>">
-                        <?php echo e(trans('global.register')); ?>
-
-                    </a>
-                </p>
-                
+                <nav class="login-card-footer-nav">
+                    <a href="https://www.efinanceng.com/terms.php">Terms of use.</a>
+                    <a href="https://efinanceng.com/privacy.php">Privacy policy</a>
+                </nav>
             </div>
         </div>
     </div>

@@ -20,39 +20,26 @@
             <table class=" table table-bordered table-striped table-hover datatable datatable-Payment">
                 <thead>
                     <tr>
-                        <th width="10">
-
+                        <th>
+                            Fullname 
                         </th>
                         <th>
-                            <?php echo e(trans('cruds.payment.fields.id')); ?>
-
+                            Payment Method
                         </th>
                         <th>
-                            <?php echo e(trans('cruds.payment.fields.loan')); ?>
-
+                            Reference No
                         </th>
                         <th>
-                            <?php echo e(trans('cruds.payment.fields.loan_amount')); ?>
-
+                            Amount Paid
                         </th>
                         <th>
-                            <?php echo e(trans('cruds.payment.fields.payment_method')); ?>
-
+                            Payment Type
                         </th>
                         <th>
-                            <?php echo e(trans('cruds.payment.fields.amount')); ?>
-
+                            Payment Date
                         </th>
                         <th>
-                            <?php echo e(trans('cruds.payment.fields.paid_at')); ?>
-
-                        </th>
-                        <th>
-                            <?php echo e(trans('cruds.payment.fields.transaction')); ?>
-
-                        </th>
-                        <th>
-                            &nbsp;
+                            Status
                         </th>
                     </tr>
                 </thead>
@@ -60,61 +47,33 @@
                     <?php $__currentLoopData = $payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr data-entry-id="<?php echo e($payment->id); ?>">
                             <td>
+                                <?php echo e($payment->user->name); ?>
 
                             </td>
                             <td>
-                                <?php echo e($payment->id ?? ''); ?>
+                                <?php echo e(App\Payment::PAYMENT_METHOD_SELECT[$payment->payment_method]); ?>
 
                             </td>
                             <td>
-                                <?php echo e($payment->loan->viewed ?? ''); ?>
+                                <?php echo e($payment->reference); ?>
 
                             </td>
                             <td>
-                                <?php echo e($payment->loan_amount->total ?? ''); ?>
+                                <?php echo e($payment->amount); ?>
 
                             </td>
                             <td>
-                                <?php echo e(App\Payment::PAYMENT_METHOD_SELECT[$payment->payment_method] ?? ''); ?>
+                                <?php echo e($payment->payment_type ?? ''); ?>
 
                             </td>
                             <td>
-                                <?php echo e($payment->amount ?? ''); ?>
+                                <?php echo e($payment->created_at->format('F d, Y')); ?>
 
                             </td>
                             <td>
-                                <?php echo e($payment->paid_at ?? ''); ?>
+                                <?php echo e($payment->status); ?>
 
                             </td>
-                            <td>
-                                <?php echo e($payment->transaction ?? ''); ?>
-
-                            </td>
-                            <td>
-                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('payment_show')): ?>
-                                    <a class="btn btn-xs btn-primary" href="<?php echo e(route('admin.payments.show', $payment->id)); ?>">
-                                        <?php echo e(trans('global.view')); ?>
-
-                                    </a>
-                                <?php endif; ?>
-
-                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('payment_edit')): ?>
-                                    <a class="btn btn-xs btn-info" href="<?php echo e(route('admin.payments.edit', $payment->id)); ?>">
-                                        <?php echo e(trans('global.edit')); ?>
-
-                                    </a>
-                                <?php endif; ?>
-
-                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('payment_delete')): ?>
-                                    <form action="<?php echo e(route('admin.payments.destroy', $payment->id)); ?>" method="POST" onsubmit="return confirm('<?php echo e(trans('global.areYouSure')); ?>');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="<?php echo e(trans('global.delete')); ?>">
-                                    </form>
-                                <?php endif; ?>
-
-                            </td>
-
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>

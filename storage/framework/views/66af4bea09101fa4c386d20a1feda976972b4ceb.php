@@ -40,7 +40,7 @@
         line-height: 60px;
         font-size:17px;
         font-weight:600;
-        color:#888;
+        color:#222;
         }
         #itemhead2{
         width:100%;
@@ -48,7 +48,7 @@
         line-height: 60px;
         font-size:17px;
         font-weight:600;
-        color:#888;
+        color:#222;
         border-bottom:1px solid #ccc;
         }
         #item{
@@ -77,14 +77,14 @@
         }
         #itemleft{
         width:50%;
-        color:#aaa;
+        color:#555;
         }
         #itemright{
         width:50%;
         text-align:right;
         font-weight:600;
         line-height: 20px;
-        color:#888;
+        color:#000;
         }
         #itemleft2{
         width:50%;
@@ -161,20 +161,20 @@
         width:100%;
         font-size:15px;
         font-weight:600;
-        color:#555;
+        color:#000;
         padding-top:30px;
         }
         #loaninfo{
         width:100%;
         font-size:15px;
-        color:#888;
+        color:#555;
         padding-top:5px;
         }
         #loanamount{
         width:100%;
         font-size:25px;
         font-weight:300;
-        color:#79a220;
+        color:green;
         }
         #approve{
         width:100px;
@@ -270,7 +270,7 @@
   <div id="imageright">
     <?php if($user->profile_image): ?>
         <a href="<?php echo e($user->profile_image->getUrl()); ?>" target="_blank">
-            <img class="img-fluid no-border" src="<?php echo e($user->profile_image->getUrl('thumb')); ?>"  alt="<?php echo e($user->name); ?> Profile Image">
+            <img class="img-fluid no-border" src="<?php echo e($user->profile_image->getUrl()); ?>"  alt="<?php echo e($user->name); ?> Profile Image">
         </a>
     <?php else: ?>
         <img class="img-fluid no-border" src="<?php echo e(asset('img/profile/default.jpeg')); ?>" alt="<?php echo e($user->name); ?> Profile Image">
@@ -433,75 +433,88 @@
             
             </div><!--item-->
         <?php elseif($current_loan->status === 'Awaiting Disbursment'): ?>
-            <div id="loanhead">Loan Status</div>
-            <div id="loaninfo"><?php echo e($current_loan->status); ?></div>
+            <?php if($user->customer_code !== null): ?>
+              <div id="loanhead">Loan Status</div>
+              <div id="loaninfo"><?php echo e($current_loan->status); ?></div>
 
-            <div id="loanhead">Loan Amount</div>
-            <div id="loanamount">NGN <?php echo e(number_format($current_loan->loan_amount, 2)); ?></div>
+              <div id="loanhead">Loan Amount</div>
+              <div id="loanamount">NGN <?php echo e(number_format($current_loan->loan_amount, 2)); ?></div>
 
-            <div id="loanhead">Request Date</div>
-            <div id="loaninfo"><?php echo e($current_loan->created_at); ?></div>
+              <div id="loanhead">Request Date</div>
+              <div id="loaninfo"><?php echo e($current_loan->created_at); ?></div>
 
-            <div id="loanhead">Loan Tenor</div>
-            <div id="loaninfo"><?php echo e($current_loan->loan_duration); ?> Month</div>
+              <div id="loanhead">Loan Tenor</div>
+              <div id="loaninfo"><?php echo e($current_loan->loan_duration); ?> Month</div>
 
-            <div id="loanhead">Interest</div>
-            <div id="loaninfo">NGN <?php echo e(number_format($current_loan->interest, 2)); ?></div>
+              <div id="loanhead">Interest</div>
+              <div id="loaninfo">NGN <?php echo e(number_format($current_loan->interest, 2)); ?></div>
 
-            <div id="loanhead">Total Payback Amount</div>
-            <div id="loaninfo">NGN <?php echo e(number_format($current_loan->total, 2)); ?></div><p>
-            <div id="item">
-            <form action="<?php echo e(route('admin.loans.disburse', $current_loan->id)); ?>" method="POST" onsubmit="return confirm('<?php echo e(trans('global.areYouSure')); ?>');" style="display: inline-block;">
-                <input type="hidden" name="_method" value="PATCH">
-                <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
-                <input type="hidden" name="status" value="Disbursed">
-                <input type="hidden" name="id" value="<?php echo e($current_loan->id); ?>">
-                <input type="submit" id="approve" value="Disburse">
-            </form>
-            
-            </div><!--item-->
+              <div id="loanhead">Total Payback Amount</div>
+              <div id="loaninfo">NGN <?php echo e(number_format($current_loan->total, 2)); ?></div><p>
+              <div id="item">
+              <form action="<?php echo e(route('admin.loans.disburse', $current_loan->id)); ?>" method="POST" onsubmit="return confirm('<?php echo e(trans('global.areYouSure')); ?>');" style="display: inline-block;">
+                  <input type="hidden" name="_method" value="PATCH">
+                  <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+                  <input type="hidden" name="status" value="Disbursed">
+                  <input type="hidden" name="id" value="<?php echo e($current_loan->id); ?>">
+
+                  <input type="hidden" name="plan" value=<?php echo e($user->plan_code); ?>>  
+                  <input type="hidden" name="customer" value="<?php echo e($user->customer_code); ?>"> 
+                  <input type="hidden" name="start_date" value="<?php echo e(Carbon\Carbon::now()->addMonths(1)->format('c')); ?>">   
+                  <input type="hidden" name="authorization" value=<?php echo e($user->authorization_code); ?>> 
+                  
+
+                  <input type="submit" id="approve" value="Disburse">
+              </form>
+              </div><!--item-->               
+            <?php else: ?>
+              <p>User payment card not verified</p>
+            <?php endif; ?>
         <?php elseif($current_loan->status === 'Disbursed'): ?>
-            <div id="loanhead">Loan Status</div>
-            <div id="loaninfo"><?php echo e($current_loan->status); ?></div>
+              <div id="loanhead">Loan Status</div>
+              <div id="loaninfo"><?php echo e($current_loan->status); ?></div>
 
-            <div id="loanhead">Loan Amount</div>
-            <div id="loanamount">NGN <?php echo e(number_format($current_loan->loan_amount, 2)); ?></div>
+              <div id="loanhead">Loan Amount</div>
+              <div id="loanamount">NGN <?php echo e(number_format($current_loan->loan_amount, 2)); ?></div>
 
-            <div id="loanhead">Request Date</div>
-            <div id="loaninfo"><?php echo e($current_loan->created_at); ?></div>
+              <div id="loanhead">Request Date</div>
+              <div id="loaninfo"><?php echo e($current_loan->created_at); ?></div>
 
-            <div id="loanhead">Loan Tenor</div>
-            <div id="loaninfo"><?php echo e($current_loan->loan_duration); ?> Month</div>
+              <div id="loanhead">Loan Tenor</div>
+              <div id="loaninfo"><?php echo e($current_loan->loan_duration); ?> Month</div>
 
-            <div id="loanhead">Interest</div>
-            <div id="loaninfo">NGN <?php echo e(number_format($current_loan->interest, 2)); ?></div>
+              <div id="loanhead">Interest</div>
+              <div id="loaninfo">NGN <?php echo e(number_format($current_loan->interest, 2)); ?></div>
 
-            <div id="loanhead">Total Payback Amount</div>
-            <div id="loaninfo">NGN <?php echo e(number_format($current_loan->total, 2)); ?></div><p>
-            
-            <div class="card mt-4">
-              <div class="card-header"> Repayment Plan</div>
-              <div class="card-body">
-                  <table class="table table-responsive-sm">
-                  <thead>
-                      <tr>
-                      <th>Amount</th>
-                      <th>Due Date</th>
-                      <th>Status</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <?php $__currentLoopData = $current_loan->loanRepayments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $loanRepayment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <div id="loanhead">Total Payback Amount</div>
+              <div id="loaninfo">NGN <?php echo e(number_format($current_loan->total, 2)); ?></div><p>
+              
+              <div id="item">
+                <button id="approve" data-toggle="modal" data-target="#payLoanModal">Pay Offline</button>
+              </div><!--item-->
+              <div class="card mt-4">
+                <div class="card-header"> Repayment Plan</div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm">
+                    <thead>
                         <tr>
-                            <td><?php echo e(number_format($loanRepayment->amount, 2)); ?></td>
-                            <td><?php echo e($loanRepayment->due_date); ?></td>
-                            <td><?php echo e($loanRepayment->status); ?></td>
+                        <th>Amount</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
                         </tr>
-                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                  </tbody>
-                  </table>
-              </div>
-            </div>
+                    </thead>
+                    <tbody>
+                        <?php $__currentLoopData = $current_loan->loanRepayments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $loanRepayment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                          <tr>
+                              <td><?php echo e(number_format($loanRepayment->amount, 2)); ?></td>
+                              <td><?php echo e($loanRepayment->due_date); ?></td>
+                              <td><?php echo e($loanRepayment->status); ?></td>
+                          </tr>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </tbody>
+                    </table>
+                </div>
+              </div> 
         <?php elseif($current_loan->status === 'Partially Paid'): ?>
           <div id="loanhead">Loan Status</div>
           <div id="loaninfo"><?php echo e($current_loan->status); ?></div>
@@ -513,7 +526,7 @@
           <div id="loaninfo">NGN <?php echo e(number_format($current_loan->loanAmounts[0]->balance, 2)); ?></div><p>
           
           <div id="item">
-            <button id="approve" data-toggle="modal" data-target="#payLoanModal">Pay Loan</button>
+            <button id="approve" data-toggle="modal" data-target="#payLoanModal">Pay Offline</button>
           </div><!--item-->
           <div class="card mt-4">
             <div class="card-header"> Repayment Plan</div>
@@ -593,7 +606,7 @@
                 <div id="loanhead">Status</div>
                 <div id="loaninfo"><?php echo e(App\Loan::STATUS_SELECT[$loan->status] ?? ''); ?></div>
   
-                <div id="view">view</div>
+                
               </div><!--historyitem-->
             </div><!--historycont-->
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -613,10 +626,23 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <?php
+                        $d =round(($current_loan->total/$current_loan->loan_duration) * 100) ;
+                        // dd($d);
+                    ?>
                     <form method="POST" action="<?php echo e(route("admin.loans.update", [$current_loan->id])); ?>" enctype="multipart/form-data" onsubmit="return confirm('<?php echo e(trans('global.areYouSure')); ?>');">
                         <div class="modal-body">
                             <?php echo method_field('PATCH'); ?>
                             <?php echo csrf_field(); ?>
+                            <input type="hidden" name="name" value="<?php echo e($current_loan->loan_amount); ?> Loan "> 
+                            <input type="hidden" name="email" value="<?php echo e($user->email); ?>"> 
+                            <input type="hidden" name="amount" value="<?php echo e($d); ?>">
+                            <input type="hidden" name="description" value="<?php echo e($user->name); ?>">
+                            <input type="hidden" name="interval" value="monthly">
+                            <input type="hidden" name="invoice_limit" value="<?php echo e($current_loan->loan_duration); ?>">
+                            <input type="hidden" name="send_invoices" value="true">
+                            <input type="hidden" name="send_sms" value="true">
+                            <input type="hidden" name="currency" value="NGN">
         
                             <div class="form-group">
                                 <label class="required" for="loan_amount"><?php echo e(trans('cruds.loan.fields.loan_amount')); ?></label>
@@ -677,6 +703,77 @@
                     </form>
                 </div>
             </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if($current_loan->status === 'Disbursed' || $current_loan->status === 'Partially Paid'): ?>
+        <div class="modal fade" id="payLoanModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="payLoanModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="payLoanModalLabel">Record Payment</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <form method="POST" action="<?php echo e(route("admin.payments.store")); ?>" enctype="multipart/form-data" onsubmit="return confirm('<?php echo e(trans('global.areYouSure')); ?>');">
+                    <div class="modal-body">
+                        <?php echo csrf_field(); ?>
+                        
+                        <input type="hidden" name="user_id" value="<?php echo e($user->id); ?>">
+                        <input type="hidden" name="loan_id" value="<?php echo e($current_loan->id); ?>">
+                        <input type="hidden" name="loan_amount_id" value="<?php echo e($current_loan->loanAmounts[0]->id); ?>">
+
+                        <div class="form-group">
+                          <label class="required"><?php echo e(trans('cruds.payment.fields.payment_method')); ?></label>
+                          <select class="form-control <?php echo e($errors->has('payment_method') ? 'is-invalid' : ''); ?>" name="payment_method" id="payment_method" required>
+                              <option value disabled <?php echo e(old('payment_method', null) === null ? 'selected' : ''); ?>><?php echo e(trans('global.pleaseSelect')); ?></option>
+                              <?php $__currentLoopData = App\Payment::PAYMENT_METHOD_SELECT; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                  <option value="<?php echo e($key); ?>" <?php echo e(old('payment_method', '') === (string) $key ? 'selected' : ''); ?>><?php echo e($label); ?></option>
+                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+                          <?php if($errors->has('payment_method')): ?>
+                              <div class="invalid-feedback">
+                                  <?php echo e($errors->first('payment_method')); ?>
+
+                              </div>
+                          <?php endif; ?>
+                          <span class="help-block"><?php echo e(trans('cruds.payment.fields.payment_method_helper')); ?></span>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="required" for="amount"><?php echo e(trans('cruds.payment.fields.amount')); ?></label>
+                          <input class="form-control <?php echo e($errors->has('amount') ? 'is-invalid' : ''); ?>" type="number" name="amount" id="amount" value="<?php echo e(old('amount', '')); ?>" step="0.01" required>
+                          <?php if($errors->has('amount')): ?>
+                              <div class="invalid-feedback">
+                                  <?php echo e($errors->first('amount')); ?>
+
+                              </div>
+                          <?php endif; ?>
+                          <span class="help-block"><?php echo e(trans('cruds.payment.fields.amount_helper')); ?></span>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="required" for="reference">Reference No</label>
+                          <input class="form-control <?php echo e($errors->has('reference') ? 'is-invalid' : ''); ?>" type="text" name="reference" id="reference" value="<?php echo e(old('reference', '')); ?>" required>
+                          <?php if($errors->has('reference')): ?>
+                              <div class="invalid-feedback">
+                                  <?php echo e($errors->first('reference')); ?>
+
+                              </div>
+                          <?php endif; ?>
+                          
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-lg btn-success">Record Payment</button>
+                    </div>
+                </form>
+              </div>
+          </div>
         </div>
     <?php endif; ?>
     <?php $__env->stopSection(); ?>

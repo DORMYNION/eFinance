@@ -1,6 +1,15 @@
 @extends('layouts.admin')
 @section('content')
 
+@can('admin')
+    <div style="margin-bottom: 10px;" class="row">
+        <div class="col-lg-12">
+            <a class="btn btn-success" href="{{ route('admin.users.create') }}">
+                {{ trans('global.add') }} {{ trans('cruds.user.title_singular') }}
+            </a>
+        </div>
+    </div>
+@endcan
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.user.title_singular') }} {{ trans('global.list') }}
@@ -8,7 +17,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-responsive-sm table-hover table-outline mb-0 datatable datatable-user">
+            <table class=" table table-responsive-sm table-hover table-outline mb-0 datatable datatable-User">
                 <thead class="thead-light">
                     <tr>
                         <th class="text-center"><i class="fa fa-picture-o"></i></th>
@@ -88,8 +97,8 @@
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
-    order: [[ 1, 'desc' ]],
-    pageLength: 50,
+    order: [[ 5, 'desc' ]],
+    pageLength: 25,
   });
   let table = $('.datatable-User:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){

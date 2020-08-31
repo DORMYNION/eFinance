@@ -35,6 +35,13 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
+    public const STAFF = '/admin';
+
+    /**
+     * The path to the "user" route for your application.
+     *
+     * @var string
+     */
     public const USER = '/user';
 
     /**

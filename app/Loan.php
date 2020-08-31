@@ -2,14 +2,11 @@
 
 namespace App;
 
-use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use \DateTimeInterface;
 
 class Loan extends Model
 {
-    use Auditable;
-
     public $table = 'loans';
 
     const LOAN_EXIST_SELECT = [
@@ -21,11 +18,14 @@ class Loan extends Model
         'created_at',
         'updated_at',
         'deleted_at',
+        'approved_at',
+        'disbursed_at',
     ];
 
     const REPAYMENT_OPTION_SELECT = [
-        'Monthly' => 'Monthly',
-        'Bullet'  => 'Bullet',
+        'Interest and Principal payable monthly'                                 => 'Interest and Principal payable monthly',
+        'Interest and Principal payable at maturity'                             => 'Interest and Principal payable at maturity',
+        'Interest payable monthly and Principal at maturity'                     => 'Interest payable monthly and Principal at maturity',
     ];
 
     const STATUS_SELECT = [
@@ -57,9 +57,13 @@ class Loan extends Model
         'loan_duration',
         'interest',
         'total',
-        'viewed',
+        'approved_at',
+        'disbursed_at',
+        'approved_by_id',
+        'disbursed_by_id',
+        // 'viewed',
         'status',
-        'customer_type',
+        // 'customer_type',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -111,5 +115,15 @@ class Loan extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by_id');
+    }
+
+    public function disbursedBy()
+    {
+        return $this->belongsTo(User::class, 'disbursed_by_id');
     }
 }

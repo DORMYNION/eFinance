@@ -62,7 +62,9 @@ return [
     'profile_picture_success'              => 'Profile picture successfully updated',
     'document_upload_success'              => 'Document successfully uploaded',
     'document_delete_success'              => 'Document successfully deleted',
-    'payment_success'                      => 'Payment successfully',
+    'payment_success'                      => 'Payment successful',
+    'add_payment_method_success'           => 'Payment method added successfully',
+    'verification_success'                 => 'Card Verification successful',
     'datatables'                           => [
         'copy'          => 'Copy',
         'csv'           => 'CSV',

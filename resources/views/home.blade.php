@@ -10,8 +10,8 @@
                     <div class="text-muted text-right mb-2">
                         <i class="fas fa-user"></i>
                     </div>
-                    <div class="text-value-lg"><h1>{{ number_format($settings1['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold h4">{{ $settings1['chart_title'] }}</small>
+                    <div class="text-value-lg"><h1>{{ number_format($settings1['total_number'] - $isAdmin ) }}</h1></div>
+                    <small class="text-muted text-uppercase font-weight-bold h5">{{ $settings1['chart_title'] }}</small>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1>{{ number_format($settings2['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold h4">{{ $settings2['chart_title'] }}</small>
+                    <small class="text-muted text-uppercase font-weight-bold h5">{{ $settings2['chart_title'] }}</small>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1>{{ number_format($settings3['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold h4">Total Loans Out</small>
+                    <small class="text-muted text-uppercase font-weight-bold h5">Total Loans Out</small>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text-value-lg"><h1>{{ number_format($settings4['total_number']) }}</h1></div>
-                    <small class="text-muted text-uppercase font-weight-bold h4">Total Paybacks In</small>
+                    <small class="text-muted text-uppercase font-weight-bold h5">Total Paybacks In</small>
                 </div>
             </div>
         </div>
@@ -72,11 +72,17 @@
                             @foreach($loans as $key => $loan)
                                 @php
                                     $sate_join = strtotime($loan->created_at);
-                                    $date_join = date('D, F d Y H:ia', $sate_join);
+                                    $date_join = date('d F, Y H:ia', $sate_join);
                                 @endphp
                                 <tr  data-entry-id="{{ $loan->id }}">
                                     <td class="text-center">
-                                        <div class="c-avatar"><img src="{{ asset('img/profile/default.png') }}" alt="" class="c-avatar-img"></div>
+                                        <div class="c-avatar">
+                                            @if($loan->user->profile_image)
+                                                <img class="c-avatar-img no-border" src="{{  $loan->user->profile_image->getUrl() }}"  alt="">
+                                            @else
+                                                <img class="c-avatar-img no-border" src="{{ asset('img/profile/default.jpeg') }}" alt="">
+                                            @endif    
+                                        </div>
                                     </td>
                                     <td>{{ $date_join }}</td>
                                     <td>
@@ -127,7 +133,7 @@
     $.extend(true, $.fn.dataTable.defaults, {
         orderCellsTop: true,
         order: [[ 1, 'desc' ]],
-        pageLength: 50,
+        pageLength: 25,
     });
     let table = $('.datatable-Dashboard:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){

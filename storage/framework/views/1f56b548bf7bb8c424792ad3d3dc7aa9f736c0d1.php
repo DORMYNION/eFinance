@@ -127,7 +127,9 @@
                             
                             <h3 class="nk-block-title fw-normal">Document Upload</h3>
                             <div class="nk-block-des">
-                                <p class="sub-title">To verify your account and approve your loan, please upload all the required documents.</p>
+                                <p class="sub-title">To approve your loan, please upload the following documents: <br>
+                                    Payslips/Bank Statement, Employment/Promotion Letter, Government Issused ID.
+                                </p>
                             </div>
                         </div>
                     </div><!-- nk-block -->
@@ -137,14 +139,6 @@
                                 <form method="POST" action="<?php echo e(route("user.document.store")); ?>" enctype="multipart/form-data">
                                     <?php echo csrf_field(); ?>
                                     <div class="nk-kycfm-content">
-                                        <div class="nk-kycfm-note">
-                                            <em class="icon ni ni-info-fill" data-toggle="tooltip" data-placement="right" title="Tooltip on right"></em>
-                                            <p>Please upload the following documents: <br>
-                                                Payslips / Bank Statement,<br> 
-                                                Employment Letter / Promotion Letter,<br> 
-                                                Government Issused ID.
-                                            </p>
-                                        </div>
                                         <div class="row g-4 pb-4">
                                             <div class="col-md-12">
                                                 <div class="form-group">
@@ -241,14 +235,14 @@
 <script>
     Dropzone.options.documentFileDropzone = {
     url: '<?php echo e(route('user.document.storeMedia')); ?>',
-    maxFilesize: 6, // MB
+    maxFilesize: 30, // MB
     maxFiles: 1,
     addRemoveLinks: true,
     headers: {
       'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
     },
     params: {
-      size: 6
+      size: 30
     },
     success: function (file, response) {
       $('form').find('input[name="document_file"]').remove()

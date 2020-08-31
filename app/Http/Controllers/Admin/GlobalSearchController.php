@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class GlobalSearchController extends Controller
 {
     private $models = [
-        'Customer' => 'cruds.customer.title',
+        'User' => 'User',
     ];
 
     public function search(Request $request)
@@ -48,7 +48,7 @@ class GlobalSearchController extends Controller
 
                 $parsedData['fields_formated'] = $formattedFields;
 
-                $parsedData['url'] = url('/admin/' . Str::plural(Str::snake($model, '-')) . '/' . $result->id . '/edit');
+                $parsedData['url'] = url('/admin/' . Str::plural(Str::snake($model, '-')) . '/' . $result->id);
 
                 $searchableData[] = $parsedData;
             }

@@ -29,7 +29,13 @@
                         ?>
                         <tr  data-entry-id="<?php echo e($loan->id); ?>">
                             <td class="text-center">
-                                <div class="c-avatar"><img src="<?php echo e(asset('img/profile/default.png')); ?>" alt="" class="c-avatar-img"></div>
+                                <div class="c-avatar">
+                                    <?php if($loan->user->profile_image): ?>
+                                        <img class="c-avatar-img no-border" src="<?php echo e($loan->user->profile_image->getUrl()); ?>"  alt="">
+                                    <?php else: ?>
+                                        <img class="c-avatar-img no-border" src="<?php echo e(asset('img/profile/default.jpeg')); ?>" alt="">
+                                    <?php endif; ?>
+                                </div>
                             </td>
                             <td><?php echo e($date_join); ?></td>
                             <td>

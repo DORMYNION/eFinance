@@ -86,30 +86,11 @@
                                             </div>
                                         </div>
                                     </li><!-- .dropdown -->
-                                    <li class="dropdown notification-dropdown">
-                                        <a href="#" class="dropdown-toggle nk-quick-nav-icon mr-lg-n1" data-toggle="dropdown">
-                                            <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em></div>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
-                                            <div class="dropdown-head">
-                                                <span class="sub-title nk-dropdown-title">Notifications</span>
-                                                <a href="<?php echo e(route('user.markAll')); ?>">Mark All as Read</a>
-                                            </div>
-                                            <div class="dropdown-body">
-                                                <div class="nk-notification">
-                                                    <?php $__currentLoopData = $user->notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                        
+                                    
                                                         
                                                                 
                                                             
-                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                </div><!-- .nk-notification -->
-                                            </div><!-- .nk-dropdown-body -->
-                                            <div class="dropdown-foot center">
-                                                <a href="#">View All</a>
-                                            </div>
-                                        </div>
-                                    </li><!-- .dropdown -->
+                                                    
                                     <li class="d-lg-none">
                                         <a href="#" class="toggle nk-quick-nav-icon mr-n1" data-target="sideNav"><em class="icon ni ni-menu"></em></a>
                                     </li>
@@ -132,24 +113,31 @@
 
                                     <?php if(session('document_type')): ?>
                                     
-                                        <div class="row mb-2">
+                                        <div class="row mb-5">
                                             <div class="col-lg-12">
                                                 <div class="alert alert-pro alert-warning" role="alert">
                                                     <div class="alert-text">
                                                         <h6>Upload Documents</h6>
-                                                        <p>Kindly upload the following documents <b><?php echo e(session()->get('document_type')); ?></b> to verify your account and for loan approval.</p>
+                                                        <p>To approve your loan, kindly upload the following documents: <br> 
+                                                            <b><?php echo e(session()->get('document_type')); ?></b>.</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     <?php endif; ?>
-                                    <?php if(session('profile_image')): ?>
-                                        <div class="row mb-2">
+                                    <?php if(session('customer_code')): ?>
+                                        <div class="row mb-5">
                                             <div class="col-lg-12">
-                                                <div class="alert alert-pro alert-warning" role="alert">
+                                                <div class="alert alert-pro alert-warning d-flex justify-content-between" role="alert">
                                                     <div class="alert-text">
-                                                        <h6>Upload Profile Picture</h6>
-                                                        <p><b><?php echo e(session()->get('profile_image')); ?></b></p>
+                                                        <h6>Insert Payment Method</h6>
+                                                        <p><b><?php echo e(session()->get('customer_code')); ?></b></p>
+                                                    </div>
+                                                    <div class="alert-actions">
+                                                        
+                    
+                                                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#verifyCard"><span>Insert Payment Method</span></a>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -161,7 +149,7 @@
                                             <div class="col-lg-12">
                                                 <div class="alert alert-pro alert-success" role="alert">
                                                     <div class="alert-text">
-                                                        <h6>Successfully</h6>
+                                                        <h6>Successful</h6>
                                                         <p><?php echo e(session('message')); ?></p>
                                                     </div>
                                                 </div>
@@ -220,6 +208,40 @@
 
         </form>
     </div>
+
+
+    <!-- @Modal - Card Verify Modal @s  -->
+    <div class="modal fade" tabindex="-1" id="verifyCard">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="Close"><em class="icon ni ni-cross"></em></a>
+                    <div class="modal-body modal-body-md text-center">
+                    <div class="nk-modal">
+                        <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cc-secure bg-success-dim text-success"></em>
+                        <h4 class="nk-modal-title">Insert Payment Card</h4>
+                        <div class="nk-modal-text">
+                            <p>Kindly add your debit card for account verification. This verification will cost NGN50. <br> We will send you a confirmation email <strong>(this may take up to 3 hours to receive)</strong>.</p>
+                            <p class="sub-text-sm"><a href="https://efinanceng.com/privacy.php">Click here</a> to learn more about privacy policy.</p>
+                        </div>
+                        <div class="nk-modal-action-lg">
+                            <form method="POST" action="<?php echo e(route('user.payment.pay')); ?>" accept-charset="UTF-8" role="form" autocomplete="off">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="email" value="<?php echo e($user->email); ?>"> 
+                                <input type="hidden" name="amount" value="5000">
+                                <input type="hidden" name="quantity" value="1">
+                                <input type="hidden" name="currency" value="NGN">
+                                <input type="hidden" name="reference" value="<?php echo e(Paystack::genTranxRef()); ?>">    
+                                <input type="hidden" name="metadata" value="<?php echo e(json_encode($array = [])); ?>">
+                                <button class="btn btn-mw btn-success" type="submit" ><span>Add Card Now</span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+        </div><!-- .modla-dialog -->
+    </div><!-- .modal -->
+
+
     <!-- app-root @e  -->
     <!-- JavaScript -->
     <script src="<?php echo e(asset('js/bundle.js')); ?>"></script>

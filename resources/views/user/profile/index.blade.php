@@ -1,4 +1,5 @@
 @extends('layouts.user')
+
 @section('mainContent')
 
 <div class="nk-block-head">
@@ -289,6 +290,13 @@
                         </div>
                         <div class="data-col data-col-end"><span class="data-more"><em class="icon ni ni-forward-ios"></em></span></div>
                     </div><!-- .data-item -->
+                    <div class="data-item">
+                        <div class="data-col">
+                            <span class="data-label">Payment Method</span>
+                            <span class="data-value">{{ $user->payment_method }}</span>
+                        </div>
+                        <div class="data-col data-col-end"><span class="data-more disable"><em class="icon ni ni-lock-alt"></em></span></div>
+                    </div><!-- .data-item -->
                 </div><!-- .nk-data -->
             </div><!-- .card -->
         </div><!-- .nk-block -->
@@ -297,9 +305,9 @@
         <div class="nk-block">
             <div class="nk-block-head">
                 <div class="nk-block-head-content">
-                    <h5 class="nk-block-title title">Security Settings</h5>
+                    <h5 class="nk-block-title title">Picture & Password </h5>
                     <div class="nk-block-des">
-                        <p>Change your profile picture, email and password here.</p>
+                        <p>Change your profile picture and password here.</p>
                     </div>
                 </div>
             </div><!-- .nk-block-head -->
@@ -593,6 +601,12 @@
                                         <input class="form-control {{ $errors->has('account_no') ? 'is-invalid' : '' }}" type="text" name="account_no" id="account_no" value="{{ old('account_no', $user->account_no) }}" required>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="payment_method">Payment Method</label>
+                                        <input class="form-control {{ $errors->has('payment_method') ? 'is-invalid' : '' }}" type="text" name="payment_method" id="payment_method" value="{{ old('payment_method', $user->payment_method) }}" required readonly>
+                                    </div>
+                                </div>
                             </div>
                         </div><!-- .tab-pane -->
                         <div class="row gy-4">
@@ -760,7 +774,7 @@
 <script>
     Dropzone.options.profileImageDropzone = {
     url: '{{ route('user.profile.storeMedia') }}',
-    maxFilesize: 1, // MB
+    maxFilesize: 30, // MB
     acceptedFiles: '.jpeg,.jpg,.png,.gif',
     maxFiles: 1,
     addRemoveLinks: true,
@@ -768,9 +782,9 @@
       'X-CSRF-TOKEN': "{{ csrf_token() }}"
     },
     params: {
-      size: 1,
-      width: 400,
-      height: 400
+      size: 3,
+      width: 4000,
+      height: 4000
     },
     success: function (file, response) {
       $('form').find('input[name="profile_image"]').remove()
